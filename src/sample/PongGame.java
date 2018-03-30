@@ -45,8 +45,8 @@ public class PongGame
         data = PData.getInstance();
         gc = data.game_gc;
 
-        leftPaddle.setup(leftPaddle.w, data.AppHeight/2);
-        rightPaddle.setup(data.AppWidth - rightPaddle.w, data.AppHeight/2);
+        leftPaddle.setup(leftPaddle.width(), data.AppHeight/2);
+        rightPaddle.setup(data.AppWidth - rightPaddle.width(), data.AppHeight/2);
         ball.setup(data.AppWidth/2, data.AppHeight/2 );
 
         // TESTING
@@ -91,7 +91,11 @@ public class PongGame
         ball.update(delta);
 
         // Check collision
+        if(leftPaddle.checkCollision(ball))
+            ball.resolveCollisionWithPaddle(leftPaddle);
 
+        if(rightPaddle.checkCollision(ball))
+            ball.resolveCollisionWithPaddle(rightPaddle);
     }
 
     // Draw Scene
