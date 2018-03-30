@@ -20,34 +20,28 @@ public class PData
         return instance;
     }
 
+    // Force Quit
+    public boolean ForceQuit = false;
+
     // Application Data
     private String      AppName = "";
     public final int    AppWidth = 680;
     public final int    AppHeight = 640;
 
     // Main Menu
-    private Scene       menu_scene;
-    private BorderPane  menu_layout = new BorderPane();
-    public  Scene getMenuScene()
-    {
-        return menu_scene;
-    }
-
+    public Scene       menu_scene;
+    public BorderPane  menu_layout = new BorderPane();
 
     // Game
-    private Scene           game_scene;
-    private BorderPane      game_layout = new BorderPane();
-    private Group           game_root = new Group();
-    private StackPane       game_holder = new StackPane();
-    private Canvas          game_canvas;
-    private GraphicsContext game_gc;
-    public  Scene getGameScene()
-    {
-        return game_scene;
-    }
+    public Scene           game_scene;
+    public BorderPane      game_layout = new BorderPane();
+    public Group           game_root = new Group();
+    public StackPane       game_holder = new StackPane();
+    public Canvas          game_canvas;
+    public GraphicsContext game_gc;
 
     // Primary Stage
-    private Stage primaryStage;
+    public Stage primaryStage;
 
     // Set Scene
     public enum PScene
@@ -80,9 +74,6 @@ public class PData
     // Setup
     public void Setup(String Appname, Stage primaryStage)
     {
-        // Setup Pong
-        PongGame.getInstance().setup(PongGame.PSide.LEFT);
-
         // Setup Stage
         this.primaryStage = primaryStage;
         this.primaryStage.setTitle((this.AppName = AppName));
@@ -101,11 +92,15 @@ public class PData
         // Clear Screen
         game_gc.clearRect(0, 0, 640, 640);
 
+        // Testing
         game_gc.setFill(Color.WHITE);
         game_gc.fillRect(0, 0, 15, 15);
         game_gc.fillRect(AppWidth - 15, AppHeight - 15, 15, 15);
 
         // Show initial Scene
         changeScene(PScene.GAME);
+
+        // Setup Pong (must be last call here since Graphics Context needs to be setup first)
+        PongGame.getInstance().setup(PongGame.PSide.LEFT);
     }
 }

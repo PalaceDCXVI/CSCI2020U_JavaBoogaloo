@@ -38,14 +38,46 @@ public class PServer extends Application
         // Create Update Function
         Thread PServer_Update = new Thread(update);
         PServer_Update.setDaemon(true);
-        //PServer_Update.start();
+        PServer_Update.start();
 
         // Player Input
-        data.getGameScene().addEventHandler(KeyEvent.KEY_PRESSED, (key) -> {
-            if(key.getCode()== KeyCode.ENTER) {
-                System.out.println("You pressed enter");
+        data.game_scene.setOnKeyPressed((key) ->
+        {
+            boolean UpKey = key.getCode()== KeyCode.UP;
+            boolean DownKey = key.getCode()== KeyCode.DOWN;
+
+            if(UpKey)
+                PongGame.getInstance().updateInputUp(true);
+            if(DownKey)
+                PongGame.getInstance().updateInputDown(true);
+        });
+        data.game_scene.setOnKeyReleased((key) ->
+        {
+            boolean UpKey = key.getCode()== KeyCode.UP;
+            boolean DownKey = key.getCode()== KeyCode.DOWN;
+
+            if(UpKey)
+                PongGame.getInstance().updateInputUp(false);
+            if(DownKey)
+                PongGame.getInstance().updateInputDown(false);
+        });
+
+        // Basic Input [Slow]
+        data.game_scene.addEventHandler(KeyEvent.KEY_PRESSED, (key) ->
+        {
+            if(key.getCode()== KeyCode.ESCAPE) {
+                //Force Quit
+                System.exit(0);
             }
         });
+    }
+
+    @Override
+    public void stop()
+    {
+        // On Application Close
+        PData.getInstance().ForceQuit = true;
+        System.exit(0);
     }
 
     // Update Task
@@ -59,10 +91,16 @@ public class PServer extends Application
                     {
                         //System.out.println("TEST");
                         PongGame.getInstance().update();
+                        PongGame.getInstance().draw();
+
+                        if(PData.getInstance().ForceQuit)
+                            return;
                     }
+
                 });
-                Thread.sleep(200);
+                Thread.sleep(1);
             }
+            //return null;
         }
     };
 }

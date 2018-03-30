@@ -1,5 +1,7 @@
 package sample;
 
+import javafx.scene.canvas.GraphicsContext;
+
 public class PongGame
 {
     // Instancing
@@ -24,33 +26,85 @@ public class PongGame
         else
             playerPaddle = rightPaddle;
     }
-    public Paddle leftPaddle = new Paddle();
-    public Paddle rightPaddle = new Paddle();
-    public Ball ball = new Ball();
+
+    private Paddle leftPaddle = new Paddle();
+    private Paddle rightPaddle = new Paddle();
+    private Ball ball = new Ball();
+
+    // Init
+    private boolean isInit = false;
+
+    // Reference To Graphics Context
+    private PData data;
+    private GraphicsContext gc;
 
     // Setup
     public void setup(PSide sideOfField)
     {
         setPlayerSide(sideOfField);
+        data = PData.getInstance();
+        gc = data.game_gc;
+
+        leftPaddle.setup(0, 0);
+        rightPaddle.setup(100, 100);
+        ball.setup(200, 200);
+
+        isInit = true;
     }
 
     // Update Player Input
-    public void updateInput(int direction)
+    public void updateInputUp(boolean UpKey)
     {
-        switch(direction)
+        if(playerPaddle == null)
         {
-            case 0:
-                break;
-            case 1:
-                break;
-            case 2:
-                break;
+            System.err.println("No Player Paddle Selected");
+            return;
         }
+
+        playerPaddle.MoveUp = UpKey;
+    }
+    public void updateInputDown(boolean DownKey)
+    {
+        if(playerPaddle == null)
+        {
+            System.err.println("No Player Paddle Selected");
+            return;
+        }
+
+        playerPaddle.MoveDown = DownKey;
     }
 
     // Update
     public void update()
     {
+        if(!isInit)
+        {
+            System.err.println("Pong Game Not Init");
+            return;
+        }
 
+        leftPaddle.update();
+        rightPaddle.update();
+        ball.update();
+    }
+
+    // Draw Scene
+    public void draw()
+    {
+        if(!isInit)
+        {
+            System.err.println("Pong Game Not Init");
+            return;
+        }
+
+        // Clear Screen
+        gc.clearRect(0, 0, data.AppWidth, data.AppHeight);
+
+        // Draw Both Paddles
+        leftPaddle.draw(gc);
+        rightPaddle.draw(gc);
+
+        // Draw Ball
+        ball.draw(gc);
     }
 }
