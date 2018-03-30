@@ -45,9 +45,12 @@ public class PongGame
         data = PData.getInstance();
         gc = data.game_gc;
 
-        leftPaddle.setup(0, 0);
-        rightPaddle.setup(100, 100);
-        ball.setup(200, 200);
+        leftPaddle.setup(leftPaddle.w, data.AppHeight/2);
+        rightPaddle.setup(data.AppWidth - rightPaddle.w, data.AppHeight/2);
+        ball.setup(data.AppWidth/2, data.AppHeight/2 );
+
+        // TESTING
+        //rightPaddle.h = 1000.0f;
 
         isInit = true;
     }
@@ -75,7 +78,7 @@ public class PongGame
     }
 
     // Update
-    public void update()
+    public void update(double delta)
     {
         if(!isInit)
         {
@@ -83,9 +86,12 @@ public class PongGame
             return;
         }
 
-        leftPaddle.update();
-        rightPaddle.update();
-        ball.update();
+        leftPaddle.update(delta);
+        rightPaddle.update(delta);
+        ball.update(delta);
+
+        // Check collision
+
     }
 
     // Draw Scene

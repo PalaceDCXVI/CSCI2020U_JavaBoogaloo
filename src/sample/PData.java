@@ -25,7 +25,7 @@ public class PData
 
     // Application Data
     private String      AppName = "";
-    public final int    AppWidth = 680;
+    public final int    AppWidth = 720;
     public final int    AppHeight = 640;
 
     // Main Menu
@@ -42,16 +42,23 @@ public class PData
 
     // Primary Stage
     public Stage primaryStage;
+    public void setAppTitle(String str)
+    {
+        if(primaryStage == null)
+            return;
+
+        primaryStage.setTitle(str);
+    }
 
     // Set Scene
-    public enum PScene
+    public enum PSceneState
     {
         NULL,
         MENU,
         GAME
     }
-    private PScene current_Pscene = PScene.NULL;
-    public void changeScene(PScene p)
+    private PSceneState current_Pscene = PSceneState.NULL;
+    public void changeScene(PSceneState p)
     {
         if(current_Pscene == p)
             return;
@@ -68,15 +75,16 @@ public class PData
                 primaryStage.setScene(game_scene);
                 break;
         }
-        primaryStage.show();
+        this.primaryStage.show();
     }
 
     // Setup
-    public void Setup(String Appname, Stage primaryStage)
+    public void Setup(String _Appname, Stage _primaryStage)
     {
         // Setup Stage
-        this.primaryStage = primaryStage;
-        this.primaryStage.setTitle((this.AppName = AppName));
+        this.primaryStage = _primaryStage;
+        this.AppName = _Appname;
+        setAppTitle(this.AppName);
         // Setup Menu
         menu_scene = new Scene(menu_layout, AppWidth, AppHeight);
 
@@ -89,16 +97,16 @@ public class PData
         game_root.getChildren().add(game_holder);
         game_layout.setCenter(game_root);
 
-        // Clear Screen
-        game_gc.clearRect(0, 0, 640, 640);
-
-        // Testing
-        game_gc.setFill(Color.WHITE);
-        game_gc.fillRect(0, 0, 15, 15);
-        game_gc.fillRect(AppWidth - 15, AppHeight - 15, 15, 15);
+        //  // Clear Screen
+        //  game_gc.clearRect(0, 0, AppWidth, AppHeight);
+        //
+        //  // Testing
+        //  game_gc.setFill(Color.WHITE);
+        //  game_gc.fillRect(0, 0, 15, 15);
+        //  game_gc.fillRect(AppWidth - 15, AppHeight - 15, 15, 15);
 
         // Show initial Scene
-        changeScene(PScene.GAME);
+        changeScene(PSceneState.GAME);
 
         // Setup Pong (must be last call here since Graphics Context needs to be setup first)
         PongGame.getInstance().setup(PongGame.PSide.LEFT);

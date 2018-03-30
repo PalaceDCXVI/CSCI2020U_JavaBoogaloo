@@ -1,5 +1,6 @@
 package sample;
 
+import javafx.animation.AnimationTimer;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.concurrent.Task;
@@ -40,7 +41,7 @@ public class PServer extends Application
         PServer_Update.setDaemon(true);
         PServer_Update.start();
 
-        // Player Input
+        // Player Input (KEY PRESS)
         data.game_scene.setOnKeyPressed((key) ->
         {
             boolean UpKey = key.getCode()== KeyCode.UP;
@@ -51,6 +52,7 @@ public class PServer extends Application
             if(DownKey)
                 PongGame.getInstance().updateInputDown(true);
         });
+        // Player Input (KEY RELEASE)
         data.game_scene.setOnKeyReleased((key) ->
         {
             boolean UpKey = key.getCode()== KeyCode.UP;
@@ -82,15 +84,48 @@ public class PServer extends Application
 
     // Update Task
     Task update = new Task<Void>() {
+
+        // Framerate Data
+        private final long[] frameTimes = new long[100];
+        private int frameTimeIndex = 0 ;
+        private boolean arrayFilled = false ;
+        // Starts 1 until framerate updates correct
+        private double deltaTime = 1.0;
+
         @Override
-        public Void call() throws Exception {
-            while (true) {
-                Platform.runLater(new Runnable() {
+        public Void call() throws Exception
+        {
+            AnimationTimer frameRateMeter = new AnimationTimer() {
+
+                @Override
+                public void handle(long now) {
+                    long oldFrameTime = frameTimes[frameTimeIndex] ;
+                    frameTimes[frameTimeIndex] = now ;
+                    frameTimeIndex = (frameTimeIndex + 1) % frameTimes.length ;
+                    if (frameTimeIndex == 0) {
+                        arrayFilled = true ;
+                    }
+                    if (arrayFilled) {
+                        long elapsedNanos = now - oldFrameTime ;
+                        long elapsedNanosPerFrame = elapsedNanos / frameTimes.length ;
+                        double frameRate = 1_000_000_000.0 / elapsedNanosPerFrame ;
+                        //label.setText(String.format("Current frame rate: %.3f", frameRate));
+                        //System.out.println(frameRate);
+                        deltaTime = 60.0 / frameRate;
+                    }
+                }
+            };
+
+            frameRateMeter.start();
+
+            while (true)
+            {
+                Platform.runLater(new Runnable()
+                {
                     @Override
                     public void run()
                     {
-                        //System.out.println("TEST");
-                        PongGame.getInstance().update();
+                        PongGame.getInstance().update(deltaTime);
                         PongGame.getInstance().draw();
 
                         if(PData.getInstance().ForceQuit)
