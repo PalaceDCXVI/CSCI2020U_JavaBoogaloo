@@ -82,6 +82,15 @@ public class PServer extends Application
         System.exit(0);
     }
 
+    // Update Thread
+    public class NewUpdate extends Thread
+    {
+        public void run()
+        {
+
+        }
+    }
+
     // Update Task
     Task update = new Task<Void>() {
 
@@ -112,6 +121,9 @@ public class PServer extends Application
                         //label.setText(String.format("Current frame rate: %.3f", frameRate));
                         //System.out.println(frameRate);
                         deltaTime = 60.0 / frameRate;
+                        // Fix (glitch occurs a bit during startup
+                        if(deltaTime > 100)
+                            deltaTime = 1.0;
                     }
                 }
             };

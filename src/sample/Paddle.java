@@ -14,13 +14,13 @@ public class Paddle
     // Size
     public Vec2 size = new Vec2(15.0f, 80.0f);
     // Speed
-    public float speed = 1.0f;
+    public float speed = 0.7f;
 
     // Shortcut positions
     public float getLeft()  {return position.x - size.x/2;}
     public float getRight() {return position.x + size.x/2;}
-    public float getTop()   {return position.y + size.x/2;}
-    public float getBottom(){return position.y - size.y/2;}
+    public float getTop()   {return position.y - size.y/2;}
+    public float getBottom(){return position.y + size.y/2;}
 
     public float width(){return size.x;}
     public float height(){return size.y;}
@@ -45,20 +45,50 @@ public class Paddle
 
     public boolean checkCollision(Ball b)
     {
-        /*
-        // Check for X position
-        boolean X_check =
-                (b.getLeft() < getRight()  && b.getLeft() > getLeft()) ||
-                (b.getRight() < getRight() && b.getRight() > getLeft());
+        // Update Slope of ball
+        b.updateSlope();
 
+        // Create line from previous ball position to current one
+        Vec2 BallTraversal_Local = b.position.subt(b.position_prev);
+        Vec2 BallTraversal_World = BallTraversal_Local.add(b.position_prev);
+
+        // y-intecept solving
+        // y = slope * x + b;
+        // y - slope * x = b;
+        float y_intercept = BallTraversal_World.y - b.slope * BallTraversal_World.x;
+
+        //System.out.println(y_intercept);
+
+        // Check y positions at left and right of box
+        float y1 = b.slope * getLeft() + y_intercept;
+        float y2 = b.slope * getRight() + y_intercept;
+
+        // It will cross the y threshold
         boolean Y_check =
-                (b.getTop() > getBottom()    && b.getTop() < getTop()) ||
-                (b.getBottom() > getBottom() && b.getBottom() < getTop());
+                (y1 - b.heightHalf() < getBottom() && y1 + b.heightHalf() > getTop()) ||
+                (y2 - b.heightHalf() < getBottom() && y2 + b.heightHalf() > getTop());
+
+        // Check if cross the x threshold
+
+        // check 1 dimensional data across direction of ball
+        Vec2 Direction = BallTraversal_Local.getNormalized();
+        // Compare ball points in 1D
+        float b1 = Direction.dot(b.position_prev);
+        float b2 = Direction.dot(b.position);
+        // Against paddle points in 1D
+        float p1 = Direction.dot(new Vec2(getLeft(), y1));
+        float p2 = Direction.dot(new Vec2(getRight(), y2));
+
+        // Convenient way to make sure b1, b2 and p1, p2 are smallest to biggest
+        Vec2 b_data = new Vec2(b1, b2);
+        Vec2 p_data = new Vec2(p1, p2);
+        b_data.ascendingSelf();
+        p_data.ascendingSelf();
+
+        // 1D values collision check
+        boolean X_check = (b_data.y >= p_data.x && p_data.y >= b_data.x);
 
         return X_check && Y_check;
-        */
-        // Create line from previous ball position to current one
-        return false;
     }
 
 

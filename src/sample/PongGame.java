@@ -1,6 +1,10 @@
 package sample;
 
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.paint.Color;
+import javafx.scene.text.Font;
+import javafx.scene.text.FontPosture;
+import javafx.scene.text.TextAlignment;
 
 public class PongGame
 {
@@ -31,6 +35,10 @@ public class PongGame
     private Paddle rightPaddle = new Paddle();
     private Ball ball = new Ball();
 
+    // Score
+    public int player1score = 0;
+    public int player2score = 0;
+
     // Init
     private boolean isInit = false;
 
@@ -47,10 +55,11 @@ public class PongGame
 
         leftPaddle.setup(leftPaddle.width(), data.AppHeight/2);
         rightPaddle.setup(data.AppWidth - rightPaddle.width(), data.AppHeight/2);
-        ball.setup(data.AppWidth/2, data.AppHeight/2 );
+        ball.reset();
 
         // TESTING
-        //rightPaddle.h = 1000.0f;
+        rightPaddle.size.y = 1000.0f;
+        //
 
         isInit = true;
     }
@@ -86,16 +95,16 @@ public class PongGame
             return;
         }
 
-        leftPaddle.update(delta);
-        rightPaddle.update(delta);
-        ball.update(delta);
-
         // Check collision
         if(leftPaddle.checkCollision(ball))
             ball.resolveCollisionWithPaddle(leftPaddle);
 
         if(rightPaddle.checkCollision(ball))
             ball.resolveCollisionWithPaddle(rightPaddle);
+
+        leftPaddle.update(delta);
+        rightPaddle.update(delta);
+        ball.update(delta);
     }
 
     // Draw Scene
@@ -116,5 +125,12 @@ public class PongGame
 
         // Draw Ball
         ball.draw(gc);
+
+        // Draw Score
+        gc.setFill(Color.WHITE);
+        gc.setFont(Utility.getFont(Utility.FontType.COURIER, FontPosture.REGULAR, 80));
+        gc.setTextAlign(TextAlignment.CENTER);
+        gc.fillText(Utility.ToString(player1score), data.AppWidth * 0.2f ,data.AppHeight * 0.2f);
+        gc.fillText(Utility.ToString(player2score), data.AppWidth * 0.8f ,data.AppHeight * 0.2f);
     }
 }
