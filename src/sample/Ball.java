@@ -46,11 +46,13 @@ public class Ball
 
         if(startLeft)
         {
+            position = position.add(new Vec2(+data.AppWidth/3, 0));
             direction.x = -1.0f;
             direction.y = 0.0f;
         }
         else
         {
+            position = position.add(new Vec2(-data.AppWidth/3, 0));
             direction.x = +1.0f;
             direction.y = 0.0f;
         }
@@ -74,6 +76,7 @@ public class Ball
             // MOVE TO RIGHT OF PADDLE
             float y1 = slope * p.getRight() + y_intercept;
             position.set(p.getRight() + width(), y1);
+
             // Fix Direction
             float ychange = y1 - p.position.y;
             float ychange_fix = ychange / (p.height()*0.5f);
@@ -87,6 +90,7 @@ public class Ball
             // MOVE TO LEFT OF PADDLE
             float y1 = slope * p.getLeft() + y_intercept;
             position.set(p.getLeft() - width(), y1);
+
             // Fix Direction
             float ychange = y1 - p.position.y;
             float ychange_fix = ychange / (p.height()*0.5f);
@@ -126,12 +130,12 @@ public class Ball
         if(position.x - size.x/2 < 0)
         {
             reset();
-            PongGame.getInstance().player1score++;
+            PongGame.getInstance().player2score++;
         }
         else if(position.x + size.x/2 > PData.getInstance().AppWidth)
         {
             reset();
-            PongGame.getInstance().player2score++;
+            PongGame.getInstance().player1score++;
         }
     }
 

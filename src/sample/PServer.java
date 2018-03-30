@@ -4,6 +4,8 @@ import javafx.animation.AnimationTimer;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.concurrent.Task;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
 import javafx.scene.Group;
@@ -41,6 +43,26 @@ public class PServer extends Application
         PServer_Update.setDaemon(true);
         PServer_Update.start();
 
+        // ADD EVENT HANDLERS AND LISTENERS HERE (temporary placement)
+
+        // Menu Button
+        data.button_test1.setOnAction(new EventHandler<ActionEvent>() {
+            @Override public void handle(ActionEvent e)
+            {
+                PData.getInstance().changeScene(PData.PSceneState.GAME);
+
+                PongGame.getInstance().enemyPaddle.size.y = 80.0f;
+            }
+        });
+        data.button_test2.setOnAction(new EventHandler<ActionEvent>() {
+            @Override public void handle(ActionEvent e)
+            {
+                PData.getInstance().changeScene(PData.PSceneState.GAME);
+
+                PongGame.getInstance().enemyPaddle.size.y = 1000.0f;
+            }
+        });
+
         // Player Input (KEY PRESS)
         data.game_scene.setOnKeyPressed((key) ->
         {
@@ -67,11 +89,20 @@ public class PServer extends Application
         // Basic Input [Slow]
         data.game_scene.addEventHandler(KeyEvent.KEY_PRESSED, (key) ->
         {
-            if(key.getCode()== KeyCode.ESCAPE) {
-                //Force Quit
+            if(key.getCode()== KeyCode.ESCAPE)
+            {
+                PData.getInstance().changeScene(PData.PSceneState.MENU);
+            }
+        });
+        data.menu_scene.addEventHandler(KeyEvent.KEY_PRESSED, (key) ->
+        {
+            if(key.getCode()== KeyCode.ESCAPE)
+            {
                 System.exit(0);
             }
         });
+
+        // End of START
     }
 
     @Override
@@ -80,15 +111,6 @@ public class PServer extends Application
         // On Application Close
         PData.getInstance().ForceQuit = true;
         System.exit(0);
-    }
-
-    // Update Thread
-    public class NewUpdate extends Thread
-    {
-        public void run()
-        {
-
-        }
     }
 
     // Update Task
@@ -104,6 +126,9 @@ public class PServer extends Application
         @Override
         public Void call() throws Exception
         {
+            // Implementation of frame rate was mostly taken from this forum post on stack overflow
+            // https://stackoverflow.com/questions/28287398/what-is-the-preferred-way-of-getting-the-frame-rate-of-a-javafx-application
+            // START OF FRAME RATE STUFF
             AnimationTimer frameRateMeter = new AnimationTimer() {
 
                 @Override
@@ -127,9 +152,10 @@ public class PServer extends Application
                     }
                 }
             };
-
             frameRateMeter.start();
+            // END OF FRAME RATE STUFF
 
+            // Treat this for loop as the update function for the server
             while (true)
             {
                 Platform.runLater(new Runnable()
@@ -147,7 +173,7 @@ public class PServer extends Application
                 });
                 Thread.sleep(1);
             }
-            //return null;
+            // End of Update Function
         }
     };
 }

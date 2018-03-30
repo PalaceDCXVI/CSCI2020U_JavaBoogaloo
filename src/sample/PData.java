@@ -1,9 +1,12 @@
 package sample;
 
+import javafx.geometry.Insets;
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.StackPane;
@@ -31,6 +34,9 @@ public class PData
     // Main Menu
     public Scene       menu_scene;
     public BorderPane  menu_layout = new BorderPane();
+    public Label title_test = new Label("HELLO");
+    public Button button_test1 = new Button("PLAY PONG test 1");
+    public Button button_test2 = new Button("PLAY PONG test 2");
 
     // Game
     public Scene           game_scene;
@@ -87,6 +93,10 @@ public class PData
         setAppTitle(this.AppName);
         // Setup Menu
         menu_scene = new Scene(menu_layout, AppWidth, AppHeight);
+        menu_layout.setPadding(new Insets(20, 20, 20, 20));
+        menu_layout.setTop(title_test);
+        menu_layout.setCenter(button_test1);
+        menu_layout.setRight(button_test2);
 
         // Setup Game
         game_scene = new Scene(game_layout, AppWidth, AppHeight);
@@ -97,18 +107,11 @@ public class PData
         game_root.getChildren().add(game_holder);
         game_layout.setCenter(game_root);
 
-        //  // Clear Screen
-        //  game_gc.clearRect(0, 0, AppWidth, AppHeight);
-        //
-        //  // Testing
-        //  game_gc.setFill(Color.WHITE);
-        //  game_gc.fillRect(0, 0, 15, 15);
-        //  game_gc.fillRect(AppWidth - 15, AppHeight - 15, 15, 15);
-
         // Show initial Scene
-        changeScene(PSceneState.GAME);
+        changeScene(PSceneState.MENU);
 
         // Setup Pong (must be last call here since Graphics Context needs to be setup first)
-        PongGame.getInstance().setup(PongGame.PSide.LEFT);
+        PongGame.getInstance().setup();
+        PongGame.getInstance().setPlayerSide(PongGame.PSide.RIGHT);
     }
 }

@@ -23,16 +23,24 @@ public class PongGame
         RIGHT
     }
     public Paddle playerPaddle = null;
+    public Paddle enemyPaddle = null;
     public void setPlayerSide(PSide s)
     {
         if(s == PSide.LEFT)
+        {
             playerPaddle = leftPaddle;
+            enemyPaddle = rightPaddle;
+        }
         else
+        {
             playerPaddle = rightPaddle;
+            enemyPaddle = leftPaddle;
+        }
+
     }
 
-    private Paddle leftPaddle = new Paddle();
-    private Paddle rightPaddle = new Paddle();
+    public Paddle leftPaddle = new Paddle();
+    public Paddle rightPaddle = new Paddle();
     private Ball ball = new Ball();
 
     // Score
@@ -47,19 +55,15 @@ public class PongGame
     private GraphicsContext gc;
 
     // Setup
-    public void setup(PSide sideOfField)
+    public void setup()
     {
-        setPlayerSide(sideOfField);
+        setPlayerSide(PSide.LEFT);
         data = PData.getInstance();
         gc = data.game_gc;
 
         leftPaddle.setup(leftPaddle.width(), data.AppHeight/2);
         rightPaddle.setup(data.AppWidth - rightPaddle.width(), data.AppHeight/2);
         ball.reset();
-
-        // TESTING
-        rightPaddle.size.y = 1000.0f;
-        //
 
         isInit = true;
     }
