@@ -20,7 +20,7 @@ public class PClient {
 
     Socket socket;
     String targetIP;
-    int clientSocket = 20500;
+    public static final int clientPort = 20500;
 
     //Write
     PrintWriter out;
@@ -28,26 +28,37 @@ public class PClient {
     //Read
     BufferedReader in;
 
-    public boolean Connect(String _targetIP) throws IOException
+    public boolean Connect(String _targetIP)
     {
         this.targetIP = _targetIP;
 
-        try {
-            socket = new Socket(targetIP, clientSocket);
+        try
+        {
+            socket = new Socket(targetIP, PServer.serverPort, null, clientPort);
+
+            //write messages
+            PrintWriter out = new PrintWriter(socket.getOutputStream(), true);
+
+            //read messages
+            BufferedReader input = new BufferedReader(new InputStreamReader(socket.getInputStream()));
         }
         catch (IOException e)
         {
             return false;
         }
 
-        //write messages
-        PrintWriter out = new PrintWriter(socket.getOutputStream(), true);
-
-        //read messages
-        BufferedReader input = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-
         return true;
     }
 
-
+    public void CloseClient()
+    {
+        try
+        {
+            socket.close();
+        }
+        catch (IOException e)
+        {
+            System.out.println("Failed to close client.");
+        }
+    }
 }

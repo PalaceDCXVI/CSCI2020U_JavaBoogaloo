@@ -1,7 +1,6 @@
 package Scenes;
 
 import javafx.geometry.Pos;
-import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -13,10 +12,7 @@ import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.TextAlignment;
-import sample.Main;
-import sample.PClient;
-import sample.PData;
-import sample.PongGame;
+import sample.*;
 
 import java.io.IOException;
 import java.net.Socket;
@@ -107,7 +103,7 @@ public class Scene_MainMenu extends Scene_Base
         PData.getInstance().AppType = PData.ApplicationType.CLIENT;
 
         // DEBUG //////////////////////////////////////////
-        PData.getInstance().changeScene(PData.PSceneState.GAME);
+        //PData.getInstance().changeScene(PData.PSceneState.GAME);
 
         //if(1 == 1)
         //    return;
@@ -125,16 +121,16 @@ public class Scene_MainMenu extends Scene_Base
 
         //Ensure connection.
         // Chances are the sockets should be in the Pong game. Should do this over there and check for validation.
-        try
+        if(PClient.GetInstance().Connect(TextField_IPAddress.getText()))
         {
-            PClient.GetInstance().Connect(TextField_IPAddress.getText());
+            Label_Error.setText("");
+
         }
-        catch (IOException e)
+        else
         {
             Label_Error.setText("Failed to connect to IP Address.");
             return;
         }
-        Label_Error.setText("");
 
 
         //Create pong game. We don't have to do more verification than that for a second year final
@@ -149,19 +145,19 @@ public class Scene_MainMenu extends Scene_Base
         //Fetch input for IP address to play against
 
         //Spawn server socket
-        try {
-            //socket = new Socket(TextField_IPAddress.getText(), clientPort);
-        }
-        catch (Exception e)
+        if (PServer.GetInstance().StartServer())
         {
-           /// e.printStackTrace();
+            Label_Error.setText("");
+        }
+        else
+        {
+            Label_Error.setText("Failed to create server");
+            return;
         }
 
         //Create the server socket for the game
         //Create thread for the server socket. Wait for response
         Label_Error.setText("Waiting for response...");
-
-
     }
 
     public void OnAction_HighScores()
