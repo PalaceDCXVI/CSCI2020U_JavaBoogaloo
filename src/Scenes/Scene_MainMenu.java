@@ -204,7 +204,7 @@ public class Scene_MainMenu extends Scene_Base {
 
     public void OnAction_HighScores() {
         //Create high score scene.
-
+        PData.getInstance().changeScene(PData.PSceneState.SCORES);
         //Remove main menu from stage.
     }
 

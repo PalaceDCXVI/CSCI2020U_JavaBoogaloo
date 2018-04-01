@@ -6,9 +6,6 @@ import javafx.scene.text.Font;
 import javafx.scene.text.FontPosture;
 import javafx.scene.text.TextAlignment;
 
-import java.util.ArrayList;
-import java.util.List;
-
 public class PongGame
 {
     // Instancing
@@ -50,19 +47,9 @@ public class PongGame
     public int player1score = 0;
     public int player2score = 0;
 
-    // Bouncer Emitters
-    private ArrayList<PEmitter> emitters = new ArrayList<PEmitter>();
-
-    public void AddEmitter(Vec2 position, int amount, Vec2 direction, Color tint)
-    {
-        PEmitter e = new PEmitter(gc, position, amount, direction);
-        e.colorTint = tint;
-        emitters.add(e);
-    }
-
     // Win
     public boolean isGameOver = false;
-    public final int winningScore = 0;
+    public final int winningScore = 1;
 
     // Init
     private boolean isInit = false;
@@ -90,15 +77,14 @@ public class PongGame
     public void reset()
     {
         isGameOver = false;
-        player1score = 0;
-        player2score = 0;
-        //
         leftPaddle.setup(leftPaddle.width(), data.AppHeight/2);
         rightPaddle.setup(data.AppWidth - rightPaddle.width(), data.AppHeight/2);
         leftPaddle.resetColor();
         rightPaddle.resetColor();
         ball.reset();
-        ball.clearTrail();
+        player1score = 0;
+        player2score = 0;
+        PData.getInstance().startTime = System.currentTimeMillis();
     }
 
     // Update Player Input
@@ -143,18 +129,6 @@ public class PongGame
             return;
         }
 
-        for(int i = 0; i < emitters.size(); i++)
-        {
-            // Update time and update self at the same time
-            emitters.get(i).update().timeAlive -= delta;
-
-            if(emitters.get(i).timeAlive <= 0.0)
-            {
-                emitters.remove(emitters.get(i));
-                break;
-            }
-        }
-
         leftPaddle.update(delta);
         rightPaddle.update(delta);
 
@@ -168,8 +142,6 @@ public class PongGame
                 ball.ResetWait = 0.0f;
         }
         else{
-
-            // Update Ball Movement
             ball.update(delta);
 
             // Check collision
@@ -177,22 +149,23 @@ public class PongGame
             {
                 ball.resolveCollisionWithPaddle(leftPaddle);
                 leftPaddle.color = Color.RED;
-                AddEmitter(leftPaddle.position, 25, new Vec2(+1, 0), new Color(0.5, 0, 0, 1));
             }
+
 
             if (rightPaddle.checkCollision(ball))
             {
                 ball.resolveCollisionWithPaddle(rightPaddle);
-                rightPaddle.color = Color.BLUE;
-                AddEmitter(rightPaddle.position, 25,  new Vec2(-1, 0), new Color(0, 0, 0.5, 1));
+                rightPaddle.color = Color.RED;
             }
+
 
         }
 
         // Check end state
-        if((player1score >= winningScore || player2score >= winningScore) && winningScore > 0)
+        if(player1score >= winningScore || player2score >= winningScore)
         {
             isGameOver = true;
+            PData.getInstance().endTime = System.currentTimeMillis();
         }
     }
 
@@ -240,12 +213,6 @@ public class PongGame
 
         if(!isGameOver)
         {
-            // Draw Emitters
-            for(int i = 0; i < emitters.size(); i++)
-            {
-                emitters.get(i).draw();
-            }
-
             // Draw Both Paddles
             leftPaddle.draw(gc);
             rightPaddle.draw(gc);
