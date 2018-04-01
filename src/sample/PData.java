@@ -1,7 +1,10 @@
 package sample;
 
 import Scenes.Scene_Game;
+import Scenes.Scene_Highscore;
 import Scenes.Scene_MainMenu;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.geometry.Insets;
 import javafx.scene.Group;
 import javafx.scene.Scene;
@@ -14,6 +17,11 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
+
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
+import java.io.IOException;
 
 public class PData
 {
@@ -46,6 +54,8 @@ public class PData
     public Scene_MainMenu   mainmenu = null;
     // Game
     public Scene_Game       game = null;
+    //Highscores
+    public Scene_Highscore  scores = null;
 
     // Primary Stage
     public Stage primaryStage;
@@ -62,11 +72,45 @@ public class PData
     {
         NULL,
         MENU,
-        GAME
+        GAME,
+        SCORES
     }
     private PSceneState current_Pscene = PSceneState.NULL;
     public PSceneState getCurrent_Pscene() {
         return current_Pscene;
+    }
+
+    private ObservableList<HighScore> highscores;
+    public ObservableList<HighScore> getHighscores() {
+        return highscores;
+    }
+    private ObservableList<HighScore> LoadHighscores()
+    {
+        ObservableList<HighScore> tScores = FXCollections.observableArrayList();
+
+        File file = new File("highscores.csv");
+        try {
+            if (file.exists()) {
+                BufferedReader inFile = new BufferedReader(new FileReader(file));
+                String line = inFile.readLine();
+                while((line = inFile.readLine()) != null)
+                {
+                    String[] splitLine = line.split(",");
+                    tScores.add(new HighScore(splitLine[0], Float.parseFloat(splitLine[1])));
+                }
+            }
+            else
+            {
+                file.createNewFile();
+            }
+        }
+        catch (IOException e)
+        {
+            System.err.println("Error loading highscores file");
+            e.printStackTrace();
+        }
+
+        return tScores;
     }
 
     public void changeScene(PSceneState p)
@@ -85,6 +129,9 @@ public class PData
             case GAME:
                 primaryStage.setScene(game.GetScene());
                 break;
+
+            case SCORES:
+                primaryStage.setScene(scores.GetScene());
         }
         this.primaryStage.show();
     }
@@ -92,14 +139,19 @@ public class PData
     // Setup
     public void Setup(String _Appname, Stage _primaryStage)
     {
+        //load highscores from "highscores.csv", needs to happen before score scene is initialized
+        highscores = LoadHighscores();
+
         // Create Scenes
         mainmenu    = new Scene_MainMenu();
         game        = new Scene_Game();
+        scores        = new Scene_Highscore();
 
         // Setup Stage
         this.primaryStage = _primaryStage;
         this.AppName = _Appname;
         setAppTitle(this.AppName);
+
 
         // Show initial Scene
         changeScene(PSceneState.MENU);

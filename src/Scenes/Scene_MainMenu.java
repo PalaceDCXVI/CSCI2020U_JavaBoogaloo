@@ -60,7 +60,7 @@ public class Scene_MainMenu extends Scene_Base
         vBox_Text.getChildren().addAll(Label_Title);
         center.add(vBox_Text, 0, 0);
 
-        TextField_IPAddress = new TextField("IpAddress");
+        TextField_IPAddress = new TextField("localhost");
         center.add(TextField_IPAddress, 1, 0);
 
         VBox vBox_Buttons = new VBox();
@@ -107,7 +107,7 @@ public class Scene_MainMenu extends Scene_Base
         PData.getInstance().AppType = PData.ApplicationType.CLIENT;
 
         // DEBUG //////////////////////////////////////////
-        PData.getInstance().changeScene(PData.PSceneState.GAME);
+        //PData.getInstance().changeScene(PData.PSceneState.GAME);
 
         //if(1 == 1)
         //    return;
@@ -115,7 +115,7 @@ public class Scene_MainMenu extends Scene_Base
 
         //Fetch input for IP address to play against
         // Validate ip
-        if (!validateIP(TextField_IPAddress.getText()))
+        if (validateIP(TextField_IPAddress.getText()))
         {
             Label_Error.setText("IP address validation failed.");
             return;
@@ -150,11 +150,11 @@ public class Scene_MainMenu extends Scene_Base
 
         //Spawn server socket
         try {
-            //socket = new Socket(TextField_IPAddress.getText(), clientPort);
+            socket = new Socket(TextField_IPAddress.getText(), clientPort);
         }
         catch (Exception e)
         {
-           /// e.printStackTrace();
+            e.printStackTrace();
         }
 
         //Create the server socket for the game
@@ -167,7 +167,7 @@ public class Scene_MainMenu extends Scene_Base
     public void OnAction_HighScores()
     {
         //Create high score scene.
-
+        PData.getInstance().changeScene(PData.PSceneState.SCORES);
         //Remove main menu from stage.
     }
 
