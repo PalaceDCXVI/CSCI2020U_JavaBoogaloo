@@ -35,13 +35,9 @@ public class PServer extends Application
     public void start(Stage primaryStage) throws Exception
     {
         // Setup All Scene information
-        PData data = PData.getInstance();
-        data.Setup("Pong Server", primaryStage);
 
-        // Create Update Function
-        //Thread PServer_Update = new Thread(update);
-        //PServer_Update.setDaemon(true);
-        //PServer_Update.start();
+
+
 
         // ADD EVENT HANDLERS AND LISTENERS HERE (temporary placement)
 

@@ -89,10 +89,10 @@ public class PData
         setAppTitle(this.AppName);
 
         // Show initial Scene
-        //changeScene(PSceneState.GAME);
+        changeScene(PSceneState.MENU);
 
         // Setup Pong (must be last call here since Graphics Context needs to be setup first)
         PongGame.getInstance().setup();
-        PongGame.getInstance().setPlayerSide(PongGame.PSide.RIGHT);
+        PongGame.getInstance().setPlayerSide(PongGame.PSide.LEFT);
     }
 }

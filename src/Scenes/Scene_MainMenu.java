@@ -6,6 +6,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.scene.input.KeyCode;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
@@ -35,6 +36,11 @@ public class Scene_MainMenu extends Scene_Base
     int clientPort = 20500;
 
     public Scene_MainMenu()
+    {
+        SetupScene();
+        SetupHandlers();
+    }
+    public void SetupScene()
     {
         root = new BorderPane();
         m_scene = new Scene(root, PData.getInstance().AppWidth, PData.getInstance().AppHeight, Color.BLACK);;
@@ -80,11 +86,28 @@ public class Scene_MainMenu extends Scene_Base
         center.add(vBox_Buttons, 0, 2);
 
         root.setCenter(center);
-
     }
+    public void SetupHandlers()
+    {
+        // Player Input (KEY PRESS)
+        m_scene.setOnKeyPressed((key) ->
+        {
+            // Escape
+            if(key.getCode() == KeyCode.ESCAPE)
+                OnAction_Exit();
+        });
+    }
+
 
     public void OnAction_Join()
     {
+        // DEBUG
+        PData.getInstance().changeScene(PData.PSceneState.GAME);
+
+        if(1 == 1)
+            return;
+        ////////////////!!!!!!!!!!!!!!1//
+
         //Fetch input for IP address to play against
 
         //Validate ip
