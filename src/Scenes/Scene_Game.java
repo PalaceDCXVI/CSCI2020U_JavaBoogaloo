@@ -7,8 +7,9 @@ import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.input.KeyCode;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.StackPane;
-import javafx.scene.paint.Color;
+import sample.PClient;
 import sample.PData;
+import sample.PServer;
 import sample.PongGame;
 
 public class Scene_Game extends Scene_Base
@@ -36,7 +37,9 @@ public class Scene_Game extends Scene_Base
         root.getChildren().add(holder);
         layout.setCenter(root);
 
-        m_scene = new Scene(layout, data.AppWidth, data.AppHeight);
+        //m_scene = new Scene(layout, data.AppWidth, data.AppHeight);
+        // Create Scene
+        CreateScene(layout);
 
     }
 
@@ -59,7 +62,17 @@ public class Scene_Game extends Scene_Base
 
             // Escape
             if(key.getCode() == KeyCode.ESCAPE)
+            {
+                if (PData.getInstance().AppType == PData.ApplicationType.SERVER)
+                {
+                    PServer.GetInstance().CloseServer();
+                }
+                else if (PData.getInstance().AppType == PData.ApplicationType.CLIENT)
+                {
+                    PClient.GetInstance().CloseClient();
+                }
                 PData.getInstance().changeScene(PData.PSceneState.MENU);
+            }
         });
         // Player Input (KEY RELEASE)
         m_scene.setOnKeyReleased((key) ->

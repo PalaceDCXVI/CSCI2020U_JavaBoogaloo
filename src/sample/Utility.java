@@ -1,5 +1,6 @@
 package sample;
 
+import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontPosture;
 
@@ -159,5 +160,53 @@ public class Utility {
     public static void PrintAllFontFamilies()
     {
         System.out.println(javafx.scene.text.Font.getFamilies());
+    }
+
+    // Function taken from
+    // https://stackoverflow.com/questions/4581877/validating-ipv4-string-in-java
+    public static boolean validIP (String ip) {
+        try {
+            if ( ip == null || ip.isEmpty() ) {
+                return false;
+            }
+
+            String[] parts = ip.split( "\\." );
+            if ( parts.length != 4 ) {
+                return false;
+            }
+
+            for ( String s : parts ) {
+                int i = Integer.parseInt( s );
+                if ( (i < 0) || (i > 255) ) {
+                    return false;
+                }
+            }
+            if ( ip.endsWith(".") ) {
+                return false;
+            }
+
+            return true;
+        } catch (NumberFormatException nfe) {
+            return false;
+        }
+    }
+
+    // Linear Interpolation
+    public static float lerp(float v0, float v1, float t)
+    {
+        return (1.0f - t) * v0 + t * v1;
+    }
+    public static double lerp(double v0, double v1, double t)
+    {
+        return (1.0 - t) * v0 + t * v1;
+    }
+
+    // Linear Interpolation for color
+    public static Color lerp(Color c0, Color c1, double t)
+    {
+        double r = lerp(c0.getRed(), c1.getRed(), t);
+        double g = lerp(c0.getGreen(), c1.getGreen(), t);
+        double b = lerp(c0.getBlue(), c1.getBlue(), t);
+        return new Color(r, g, b, 1);
     }
 }

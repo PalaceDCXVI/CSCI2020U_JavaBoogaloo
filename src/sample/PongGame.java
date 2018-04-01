@@ -79,6 +79,8 @@ public class PongGame
         isGameOver = false;
         leftPaddle.setup(leftPaddle.width(), data.AppHeight/2);
         rightPaddle.setup(data.AppWidth - rightPaddle.width(), data.AppHeight/2);
+        leftPaddle.resetColor();
+        rightPaddle.resetColor();
         ball.reset();
         player1score = 0;
         player2score = 0;
@@ -143,10 +145,18 @@ public class PongGame
 
             // Check collision
             if (leftPaddle.checkCollision(ball))
+            {
                 ball.resolveCollisionWithPaddle(leftPaddle);
+                leftPaddle.color = Color.RED;
+            }
+
 
             if (rightPaddle.checkCollision(ball))
+            {
                 ball.resolveCollisionWithPaddle(rightPaddle);
+                rightPaddle.color = Color.RED;
+            }
+
 
         }
 
@@ -170,8 +180,27 @@ public class PongGame
         gc.clearRect(0, 0, data.AppWidth, data.AppHeight);
 
         // Draw Middle Line
-        gc.setFill(Color.GRAY);
+        gc.setFill(Color.DARKGRAY);
         gc.fillRect(data.AppWidth*0.5f - 2.5f, 0.0f, 5.0f, data.AppHeight);
+
+        // Draw Server Data on top left
+        gc.setFill(Color.GRAY);
+        gc.setFont(Utility.getFont(Utility.FontType.COURIER, FontPosture.REGULAR, 16));
+        gc.setTextAlign(TextAlignment.LEFT);
+
+        String ServerInfo1 = "Server: ";
+        if(data.AppType == PData.ApplicationType.CLIENT)
+            ServerInfo1 = "Client: ";
+
+        ServerInfo1 += data.IpAddress + "\nPort: " + Utility.ToString(data.Port);
+
+        gc.fillText(ServerInfo1, 2, 14);
+
+
+        gc.setTextAlign(TextAlignment.RIGHT);
+        String ServerInfo2 = "Client Connection: " + ((data.ClientConnected) ? "TRUE" : "FALSE");
+        ServerInfo2 += "\nClient Ping: 0ms";
+        gc.fillText(ServerInfo2, data.AppWidth, 14);
 
         // Draw Score
         gc.setFill(Color.WHITE);

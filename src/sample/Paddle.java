@@ -9,6 +9,9 @@ public class Paddle
     public boolean MoveUp = false;
     public boolean MoveDown = false;
 
+    // Color
+    public Color color = Color.color(1,1,1,1);
+
     // Position
     public Vec2 position = new Vec2();
     // Size
@@ -105,11 +108,21 @@ public class Paddle
             moveUp(delta);
         else if(!MoveUp && MoveDown)
             moveDown(delta);
+
+        // Lerp Color to white
+        color = Utility.lerp(color, Color.WHITE, 0.005);
     }
+
+    public void resetColor()
+    {
+        color = Color.WHITE;
+    }
+
 
     public void draw(GraphicsContext gc)
     {
-        gc.setFill(Color.WHITE);
+        gc.setFill(color);
+        //System.out.println(color);
         gc.fillRect(position.x - size.x/2, position.y - size.y/2, size.x, size.y);
     }
 }
