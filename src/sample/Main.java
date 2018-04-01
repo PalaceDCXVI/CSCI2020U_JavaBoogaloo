@@ -88,8 +88,12 @@ public class Main extends Application
                     @Override
                     public void run()
                     {
-                        PongGame.getInstance().update(deltaTime);
-                        PongGame.getInstance().draw();
+                        // GAME
+                        if(PData.getInstance().getCurrent_Pscene() == PData.PSceneState.GAME)
+                        {
+                            PongGame.getInstance().update(deltaTime);
+                            PongGame.getInstance().draw();
+                        }
 
                         if(PData.getInstance().ForceQuit)
                             return;

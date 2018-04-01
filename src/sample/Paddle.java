@@ -24,6 +24,8 @@ public class Paddle
 
     public float width(){return size.x;}
     public float height(){return size.y;}
+    public float widthHalf(){return size.x*0.5f;}
+    public float heightHalf(){return size.y*0.5f;}
 
     // Movement
     private void moveUp(double delta)
@@ -31,7 +33,7 @@ public class Paddle
         position.y -= speed * delta;
 
         // Check screen limit
-        if(position.y < 0){ position.y = 0.0f;}
+        if(position.y - heightHalf() < 0){ position.y = heightHalf();}
     }
     private void moveDown(double delta)
     {
@@ -39,8 +41,8 @@ public class Paddle
 
         // Check Screen limit
         float screen_height = PData.getInstance().AppHeight;
-        if(position.y + size.y > screen_height)
-            position.y = screen_height - size.y;
+        if(position.y + heightHalf() > screen_height)
+            position.y = screen_height - heightHalf();
     }
 
     public boolean checkCollision(Ball b)

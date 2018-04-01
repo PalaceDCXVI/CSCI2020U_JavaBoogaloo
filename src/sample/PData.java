@@ -28,6 +28,15 @@ public class PData
     // Force Quit
     public boolean ForceQuit = false;
 
+    // Status
+    public enum ApplicationType
+    {
+        NONE,
+        SERVER,
+        CLIENT
+    }
+    public ApplicationType AppType = ApplicationType.NONE;
+
     // Application Data
     private String      AppName = "";
     public final int    AppWidth = 720;
@@ -56,6 +65,10 @@ public class PData
         GAME
     }
     private PSceneState current_Pscene = PSceneState.NULL;
+    public PSceneState getCurrent_Pscene() {
+        return current_Pscene;
+    }
+
     public void changeScene(PSceneState p)
     {
         if(current_Pscene == p)

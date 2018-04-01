@@ -39,25 +39,40 @@ public class Ball
     public float widthHalf(){return size.x*0.5f;}
     public float heightHalf(){return size.y*0.5f;}
 
-    public void reset()
+    // Reset Wait
+    public float ResetWait = 0.0f;
+    public float ResetTime = 1000.0f;
+
+    // Attach To Paddle
+    public void attachToPaddle()
     {
-        PData data = PData.getInstance();
-        position.set(data.AppWidth/2, data.AppHeight/2);
+        PongGame pong = PongGame.getInstance();
 
         if(startLeft)
         {
-            position = position.add(new Vec2(+data.AppWidth/3, 0));
-            direction.x = -1.0f;
+            float x = pong.leftPaddle.position.x + pong.leftPaddle.widthHalf()*0.5f + width() + 10.0f;
+            float y = pong.leftPaddle.position.y;
+            position.set(x, y);
+            position_prev.set(position);
+            direction.x = +1.0f;
             direction.y = 0.0f;
         }
         else
         {
-            position = position.add(new Vec2(-data.AppWidth/3, 0));
-            direction.x = +1.0f;
+            float x = pong.rightPaddle.position.x - pong.leftPaddle.widthHalf()*0.5f - width() - 10.0f;
+            float y = pong.rightPaddle.position.y;
+            position.set(x, y);
+            position_prev.set(position);
+            direction.x = -1.0f;
             direction.y = 0.0f;
         }
+    }
 
-        startLeft = !startLeft;
+    // Reset To player paddle
+    public void reset()
+    {
+        ResetWait = ResetTime;
+        attachToPaddle();
     }
 
     public void resolveCollisionWithPaddle(Paddle p)
@@ -103,8 +118,6 @@ public class Ball
 
     public void update(double delta)
     {
-        //System.out.println(delta);
-
         position_prev.set(position);
 
         // Calculate New Position for Ball
@@ -131,11 +144,13 @@ public class Ball
         {
             reset();
             PongGame.getInstance().player2score++;
+            startLeft = true;
         }
         else if(position.x + size.x/2 > PData.getInstance().AppWidth)
         {
             reset();
             PongGame.getInstance().player1score++;
+            startLeft = false;
         }
     }
 

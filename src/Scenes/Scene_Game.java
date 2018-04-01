@@ -53,6 +53,10 @@ public class Scene_Game extends Scene_Base
             if(DownKey)
                 PongGame.getInstance().updateInputDown(true);
 
+            // Space Bar
+            if(key.getCode() == KeyCode.SPACE)
+                PongGame.getInstance().updateInputSpacebar(true);
+
             // Escape
             if(key.getCode() == KeyCode.ESCAPE)
                 PData.getInstance().changeScene(PData.PSceneState.MENU);
@@ -67,6 +71,10 @@ public class Scene_Game extends Scene_Base
                 PongGame.getInstance().updateInputUp(false);
             if(DownKey)
                 PongGame.getInstance().updateInputDown(false);
+
+            // Space Bar
+            if(key.getCode() == KeyCode.SPACE)
+                PongGame.getInstance().updateInputSpacebar(false);
         });
     }
 }

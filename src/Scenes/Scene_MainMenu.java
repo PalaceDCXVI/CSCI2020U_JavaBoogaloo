@@ -101,7 +101,10 @@ public class Scene_MainMenu extends Scene_Base
 
     public void OnAction_Join()
     {
-        // DEBUG
+        // Change Type
+        PData.getInstance().AppType = PData.ApplicationType.CLIENT;
+
+        // DEBUG //////////////////////////////////////////
         PData.getInstance().changeScene(PData.PSceneState.GAME);
 
         if(1 == 1)
@@ -135,6 +138,9 @@ public class Scene_MainMenu extends Scene_Base
 
     public void OnAction_Create()
     {
+        // Change Type
+        PData.getInstance().AppType = PData.ApplicationType.SERVER;
+
         //Fetch input for IP address to play against
 
         //Spawn server socket
