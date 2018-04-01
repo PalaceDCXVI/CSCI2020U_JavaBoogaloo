@@ -18,10 +18,7 @@ import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileReader;
-import java.io.IOException;
+import java.io.*;
 
 public class PData
 {
@@ -59,13 +56,14 @@ public class PData
     private String      AppName = "";
     public final int    AppWidth = 720;
     public final int    AppHeight = 640;
+    public long startTime, endTime;
 
     // Main Menu
     public Scene_MainMenu   mainmenu = null;
     // Game
     public Scene_Game       game = null;
     //Highscores
-    public Scene_Highscore  scores = null;
+    public Scene_Highscore  highscore = null;
 
     // Primary Stage
     public Stage primaryStage;
@@ -122,6 +120,29 @@ public class PData
 
         return tScores;
     }
+    private void SaveHighscores()
+    {
+        try
+        {
+            File file = new File("highscores.csv");
+            PrintWriter outFile = new PrintWriter(file);
+            outFile.println("Username,GameTime");
+            for(HighScore score : highscores)
+            {
+                outFile.println(score.toString());
+            }
+            outFile.close();
+        }
+        catch(IOException e)
+        {
+            System.err.println("Error saving highscores file");
+            e.printStackTrace();
+        }
+    }
+    public void AddHighscore()
+    {
+        highscores.add(new HighScore("Username", endTime - startTime));
+    }
 
     public void changeScene(PSceneState p)
     {
@@ -137,11 +158,12 @@ public class PData
                 break;
 
             case GAME:
+                PData.getInstance().startTime = System.currentTimeMillis();
                 primaryStage.setScene(game.GetScene());
                 break;
 
             case SCORES:
-                primaryStage.setScene(scores.GetScene());
+                primaryStage.setScene(highscore.GetScene());
         }
         this.primaryStage.show();
     }
@@ -155,7 +177,7 @@ public class PData
         // Create Scenes
         mainmenu    = new Scene_MainMenu();
         game        = new Scene_Game();
-        scores        = new Scene_Highscore();
+        highscore        = new Scene_Highscore();
 
         // Setup Stage
         this.primaryStage = _primaryStage;

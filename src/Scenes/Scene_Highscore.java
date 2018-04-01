@@ -23,7 +23,7 @@ public class Scene_Highscore extends Scene_Base
     public Scene_Highscore()
     {
         SetupScene();
-
+        SetupHandlers();
     }
 
     public void SetupScene()
@@ -54,6 +54,11 @@ public class Scene_Highscore extends Scene_Base
         BorderPane.setAlignment(backButton, Pos.CENTER);
         root.setPadding(new Insets(5, 5, 5, 5));
         m_scene = new Scene(root, PData.getInstance().AppWidth, PData.getInstance().AppHeight, Color.BLACK);
+    }
+
+    public void RefreshScores()
+    {
+        table.setItems(PData.getInstance().getHighscores());
     }
 
     public void SetupHandlers()

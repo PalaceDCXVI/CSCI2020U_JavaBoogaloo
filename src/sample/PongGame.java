@@ -84,6 +84,7 @@ public class PongGame
         ball.reset();
         player1score = 0;
         player2score = 0;
+        PData.getInstance().startTime = System.currentTimeMillis();
     }
 
     // Update Player Input
@@ -164,6 +165,7 @@ public class PongGame
         if(player1score >= winningScore || player2score >= winningScore)
         {
             isGameOver = true;
+            PData.getInstance().endTime = System.currentTimeMillis();
         }
     }
 
