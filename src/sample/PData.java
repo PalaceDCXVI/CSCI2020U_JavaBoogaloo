@@ -36,6 +36,16 @@ public class PData
         CLIENT
     }
     public ApplicationType AppType = ApplicationType.NONE;
+    public String IpAddress = "";
+    public int Port = 0;
+    public static boolean ClientConnected = false;
+    public static void SetAppData(ApplicationType a, String ipaddr, int port)
+    {
+        PData data = PData.getInstance();
+        data.AppType = a;
+        data.IpAddress = ipaddr;
+        data.Port = port;
+    }
 
     // Application Data
     private String      AppName = "";

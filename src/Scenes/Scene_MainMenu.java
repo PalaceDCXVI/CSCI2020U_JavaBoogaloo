@@ -161,7 +161,7 @@ public class Scene_MainMenu extends Scene_Base
     public void OnAction_Create()
     {
         // Change Type
-        PData.getInstance().AppType = PData.ApplicationType.SERVER;
+        PData.SetAppData(PData.ApplicationType.SERVER, text_ipaddress.getText(), clientPort);
 
         // DEBUG //
         PData.getInstance().changeScene(PData.PSceneState.GAME);
@@ -193,7 +193,7 @@ public class Scene_MainMenu extends Scene_Base
     public void OnAction_Join()
     {
         // Change Type
-        PData.getInstance().AppType = PData.ApplicationType.CLIENT;
+        PData.SetAppData(PData.ApplicationType.CLIENT, text_ipaddress.getText(), clientPort);
 
         // DEBUG //
         PData.getInstance().changeScene(PData.PSceneState.GAME);
