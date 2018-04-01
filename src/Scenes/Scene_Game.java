@@ -36,7 +36,9 @@ public class Scene_Game extends Scene_Base
         root.getChildren().add(holder);
         layout.setCenter(root);
 
-        m_scene = new Scene(layout, data.AppWidth, data.AppHeight);
+        //m_scene = new Scene(layout, data.AppWidth, data.AppHeight);
+        // Create Scene
+        CreateScene(layout);
 
     }
 

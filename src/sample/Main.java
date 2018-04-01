@@ -20,6 +20,9 @@ public class Main extends Application
 
     public void start(Stage primaryStage) throws Exception
     {
+        // Load Image
+        ImageLoader.CreateImage("logo", "src/Images/game_title.png");
+
         // Setup Information
         PData data = PData.getInstance();
         data.Setup("Pong with Friends", primaryStage);
