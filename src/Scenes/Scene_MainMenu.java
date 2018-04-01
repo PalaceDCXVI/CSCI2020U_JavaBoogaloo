@@ -14,9 +14,11 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.TextAlignment;
 import sample.Main;
+import sample.PClient;
 import sample.PData;
 import sample.PongGame;
 
+import java.io.IOException;
 import java.net.Socket;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -107,13 +109,12 @@ public class Scene_MainMenu extends Scene_Base
         // DEBUG //////////////////////////////////////////
         PData.getInstance().changeScene(PData.PSceneState.GAME);
 
-        if(1 == 1)
-            return;
+        //if(1 == 1)
+        //    return;
         ////////////////!!!!!!!!!!!!!!1//
 
         //Fetch input for IP address to play against
-
-        //Validate ip
+        // Validate ip
         if (!validateIP(TextField_IPAddress.getText()))
         {
             Label_Error.setText("IP address validation failed.");
@@ -124,16 +125,20 @@ public class Scene_MainMenu extends Scene_Base
 
         //Ensure connection.
         // Chances are the sockets should be in the Pong game. Should do this over there and check for validation.
-        try {
-            socket = new Socket(TextField_IPAddress.getText(), clientPort);
-        }
-        catch (Exception e)
+        try
         {
-            e.printStackTrace();
+            PClient.GetInstance().Connect(TextField_IPAddress.getText());
         }
+        catch (IOException e)
+        {
+            Label_Error.setText("Failed to connect to IP Address.");
+            return;
+        }
+        Label_Error.setText("");
 
-        //Create pong game. We don't have to do more verification than that for an second year final
-        //PongGame.getInstance();
+
+        //Create pong game. We don't have to do more verification than that for a second year final
+        PData.getInstance().changeScene(PData.PSceneState.GAME);
     }
 
     public void OnAction_Create()
