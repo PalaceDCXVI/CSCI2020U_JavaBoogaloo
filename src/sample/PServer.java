@@ -39,29 +39,30 @@ public class PServer extends Application
         data.Setup("Pong Server", primaryStage);
 
         // Create Update Function
-        Thread PServer_Update = new Thread(update);
-        PServer_Update.setDaemon(true);
-        PServer_Update.start();
+        //Thread PServer_Update = new Thread(update);
+        //PServer_Update.setDaemon(true);
+        //PServer_Update.start();
 
         // ADD EVENT HANDLERS AND LISTENERS HERE (temporary placement)
 
-        // Menu Button
-        data.button_test1.setOnAction(new EventHandler<ActionEvent>() {
-            @Override public void handle(ActionEvent e)
-            {
-                PData.getInstance().changeScene(PData.PSceneState.GAME);
+        /*
+         //Menu Button
+          data.button_test1.setOnAction(new EventHandler<ActionEvent>() {
+              @Override public void handle(ActionEvent e)
+              {
+                  PData.getInstance().changeScene(PData.PSceneState.GAME);
 
-                PongGame.getInstance().enemyPaddle.size.y = 80.0f;
-            }
-        });
-        data.button_test2.setOnAction(new EventHandler<ActionEvent>() {
-            @Override public void handle(ActionEvent e)
-            {
-                PData.getInstance().changeScene(PData.PSceneState.GAME);
+                  PongGame.getInstance().enemyPaddle.size.y = 80.0f;
+              }
+          });
+          data.button_test2.setOnAction(new EventHandler<ActionEvent>() {
+              @Override public void handle(ActionEvent e)
+              {
+                  PData.getInstance().changeScene(PData.PSceneState.GAME);
 
-                PongGame.getInstance().enemyPaddle.size.y = 1000.0f;
-            }
-        });
+                  PongGame.getInstance().enemyPaddle.size.y = 1000.0f;
+              }
+          });
 
         // Player Input (KEY PRESS)
         data.game_scene.setOnKeyPressed((key) ->
@@ -101,6 +102,7 @@ public class PServer extends Application
                 System.exit(0);
             }
         });
+        */
 
         // End of START
     }

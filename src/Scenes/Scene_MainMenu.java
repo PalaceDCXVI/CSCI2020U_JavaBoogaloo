@@ -1,4 +1,4 @@
-package MainMenu;
+package Scenes;
 
 import javafx.geometry.Pos;
 import javafx.scene.Group;
@@ -13,16 +13,16 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.TextAlignment;
 import sample.Main;
+import sample.PData;
 import sample.PongGame;
 
 import java.net.Socket;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class Scene_MainMenu
+public class Scene_MainMenu extends Scene_Base
 {
     private BorderPane root;
-    private Scene scene;
 
     private Label Label_Title;
     private Button Button_Join; private TextField TextField_IPAddress; private Label Label_Error;
@@ -37,7 +37,7 @@ public class Scene_MainMenu
     public Scene_MainMenu()
     {
         root = new BorderPane();
-        scene = new Scene(root, 800, 600, Color.BLACK);
+        m_scene = new Scene(root, PData.getInstance().AppWidth, PData.getInstance().AppHeight, Color.BLACK);;
 
         GridPane center = new GridPane();
         center.setAlignment(Pos.CENTER);
@@ -81,11 +81,6 @@ public class Scene_MainMenu
 
         root.setCenter(center);
 
-    }
-
-    public void SetAsMainScene()
-    {
-        Main.primaryStage.setScene(scene);
     }
 
     public void OnAction_Join()

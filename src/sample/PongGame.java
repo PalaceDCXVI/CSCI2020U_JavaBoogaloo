@@ -59,7 +59,7 @@ public class PongGame
     {
         setPlayerSide(PSide.LEFT);
         data = PData.getInstance();
-        gc = data.game_gc;
+        gc = data.game.gc;
 
         leftPaddle.setup(leftPaddle.width(), data.AppHeight/2);
         rightPaddle.setup(data.AppWidth - rightPaddle.width(), data.AppHeight/2);

@@ -1,6 +1,6 @@
 package sample;
 
-import MainMenu.Scene_MainMenu;
+import Scenes.Scene_MainMenu;
 import javafx.application.Application;
 import javafx.stage.Stage;
 
@@ -16,7 +16,9 @@ public class Main extends Application
         this.primaryStage = primaryStage;
 
         Scene_MainMenu mainMenu = new Scene_MainMenu();
-        mainMenu.SetAsMainScene();
+
+        primaryStage.setScene(mainMenu.GetScene());
+        //mainMenu.SetAsMainScene();
 
         primaryStage.show();
     }
