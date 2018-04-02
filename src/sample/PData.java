@@ -158,6 +158,7 @@ public class PData
         {
             case MENU:
                 primaryStage.setScene(mainmenu.GetScene());
+                mainmenu.UpdateButtonLockRules();
                 break;
 
             case GAME:

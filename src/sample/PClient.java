@@ -141,6 +141,9 @@ public class PClient {
                 break;
 
             case PARTICLE:
+                if(words.length != 9)
+                    break;
+
                 PongGame.getInstance().AddEmitter(new Vec2(Float.parseFloat(words[1]), Float.parseFloat(words[2])),  Math.round(Float.parseFloat(words[3])),  new Vec2(Float.parseFloat(words[4]), Float.parseFloat(words[5])), new Color(Float.parseFloat(words[6]), Float.parseFloat(words[7]), Float.parseFloat(words[8]), 1.0));
                 break;
 
