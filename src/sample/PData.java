@@ -190,6 +190,14 @@ public class PData
 
         // Setup Pong (must be last call here since Graphics Context needs to be setup first)
         PongGame.getInstance().setup();
-        PongGame.getInstance().setPlayerSide(PongGame.PSide.LEFT);
+
+        if (AppType == ApplicationType.SERVER)
+        {
+            PongGame.getInstance().setPlayerSide(PongGame.PSide.LEFT);
+        }
+        else
+        {
+            PongGame.getInstance().setPlayerSide(PongGame.PSide.RIGHT);
+        }
     }
 }

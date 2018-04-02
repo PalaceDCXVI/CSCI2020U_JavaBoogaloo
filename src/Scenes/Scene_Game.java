@@ -33,9 +33,9 @@ public class Scene_Game extends Scene_Base
         canvas = new Canvas(data.AppWidth, data.AppHeight);
         gc = canvas.getGraphicsContext2D();
         holder.getChildren().add(canvas);
-        holder.setStyle("-fx-background-color: black");
         root.getChildren().add(holder);
         layout.setCenter(root);
+        layout.setStyle("-fx-background-color: black");
 
         //m_scene = new Scene(layout, data.AppWidth, data.AppHeight);
         // Create Scene

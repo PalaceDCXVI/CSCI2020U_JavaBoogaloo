@@ -88,6 +88,16 @@ public class Utility {
         }
     }
 
+    // Char to Integer
+    public static int ToString(char c) { return Character.getNumericValue(c); }
+    public static char ToChar(String str)
+    {
+        if(str.length() == 0)
+            return '?';
+
+        return str.toCharArray()[0];
+    }
+
     // Close Socket
     public static void CloseSocket(Socket socket)
     {
