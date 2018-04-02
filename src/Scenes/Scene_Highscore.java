@@ -55,8 +55,7 @@ public class Scene_Highscore extends Scene_Base
         BorderPane.setMargin(backButton, new Insets(5));
         BorderPane.setAlignment(backButton, Pos.CENTER);
         root.setPadding(new Insets(5, 5, 5, 5));
-        root.setId("menu");
-        m_scene = new Scene(root, PData.getInstance().AppWidth, PData.getInstance().AppHeight, Color.BLACK);
+        CreateScene(root);
         m_scene.getStylesheets().add("stylesheet.css");
     }
 

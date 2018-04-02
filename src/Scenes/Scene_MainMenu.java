@@ -58,6 +58,8 @@ public class Scene_MainMenu extends Scene_Base {
     public void SetupScene() {
         // Create Scene
         CreateScene(root);
+        //root.setId("menu");
+        m_scene.getStylesheets().add("stylesheet.css");
 
         // General GUI
         ImageView logo = ImageLoader.GetImage("logo");

@@ -1,12 +1,51 @@
+.root{
+    -fx-background-color: #2B2B2B;
+}
+
+.label{
+    -fx-text-fill: #a3a3a3;
+}
+
 #menu{
-    -fx-background-color: #28292b;
+     -fx-background-color: black;
 }
 
-#button{
-    -fx-background-color: #28292b;
-    -fx-text-fill: grey;
+.button{
+    -fx-background-color: #3B3F42;
+    -fx-text-fill: #a3a3a3;
 }
 
-#score-table{
-    -fx-background-color: #28292b, #505256;
+.table-view{
+    -fx-background-color: transparent;
+}
+
+.table-view .table-cell{
+    -fx-text-fill: white;
+}
+
+.table-view .column-header-background{
+     -fx-background-color: #2B2B2B;
+}
+
+.table-view .column-header-background .label{
+    -fx-background-color: transparent;
+    -fx-text-fill: white;
+}
+
+.table-view .column-header {
+    -fx-background-color: transparent;
+}
+
+.table-view .filler{
+     -fx-background-color: transparent;
+}
+
+.table-row-cell{
+    -fx-background-color: #323335;
+    -fx-table-cell-border-color: #323335;
+}
+
+.table-row-cell:odd{
+    -fx-background-color: #3B3F42;
+    -fx-table-cell-border-color: #3B3F42;
 }
