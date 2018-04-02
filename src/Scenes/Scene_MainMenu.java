@@ -134,9 +134,10 @@ public class Scene_MainMenu extends Scene_Base {
     public void UpdateButtonLockRules() {
         boolean EmptyUsername = text_username.getText().length() == 0;
         boolean InvalidID = !Utility.validIP(text_ipaddress.getText());
+        boolean ServerRunning = PServer.GetInstance().isStarted();
 
         button_host.setDisable(EmptyUsername);
-        button_join.setDisable(EmptyUsername || InvalidID);
+        button_join.setDisable(EmptyUsername || InvalidID || ServerRunning);
 
     }
 
@@ -151,7 +152,8 @@ public class Scene_MainMenu extends Scene_Base {
         });
     }
 
-    public void OnAction_Create() {
+    public void OnAction_Create()
+    {
 
         //Can't spawn multiple hosting/joining threads
         if(PServer.GetInstance().isStarted())
@@ -177,6 +179,8 @@ public class Scene_MainMenu extends Scene_Base {
         //Create the server socket for the game
         //Create thread for the server socket. Wait for response
         label_status.setText("Waiting for response...");
+
+        UpdateButtonLockRules();
     }
 
     public void OnAction_LocalHost() {
