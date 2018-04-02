@@ -218,6 +218,7 @@ public class Scene_MainMenu extends Scene_Base {
     }
 
     //Copied this from here: http://javafxforbeginners.blogspot.ca/2015/08/javafx-validating-text-field-with-ip.html
+    //Checks for the validity of an IP's struture.
     public boolean validateIP(final String ip) {
         Pattern pattern;
         Matcher matcher;

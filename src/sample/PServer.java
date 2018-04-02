@@ -2,6 +2,7 @@ package sample;
 
 import javafx.application.Platform;
 import javafx.concurrent.Task;
+import javafx.scene.paint.Color;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -34,6 +35,7 @@ public class PServer
     //Read
     BufferedReader in;
 
+    //Inits the server, returns true if it succeeds.
     public boolean StartServer()
     {
         try {
@@ -45,6 +47,7 @@ public class PServer
             return false;
         }
 
+        //Accept() blocks while waiting for a connection, so we spawn a thread to wait for an incoming message. It's kinda dumb, but functional enough.
         Task<Integer> r = new Task<>()
         {
             @Override
@@ -64,6 +67,7 @@ public class PServer
 
                 }
 
+                //This is an annoying thing, but it wouldn't change the scene otherwise.
                 Platform.runLater(() -> PData.getInstance().changeScene(PData.PSceneState.GAME));
 
                 return 0;
@@ -75,20 +79,7 @@ public class PServer
         return true;
     }
 
-    public String GetMessage()
-    {
-        String line = "";
-        try {
-            line = in.readLine();
-        }
-        catch (IOException e)
-        {
-            return "";
-        }
-
-        return line;
-    }
-
+    //Send standardized message
     public String SendMessage(PongGame.ObjectNetId id, Vec2 pos)
     {
         if (out == null)
@@ -103,8 +94,25 @@ public class PServer
         return "";
     }
 
+    //Send specialized message that contains all the information for the particle emitters.
+    public String SendMessage(PongGame.ObjectNetId id, Vec2 pos, Integer amnt, Vec2 Dir, Color col)
+    {
+        if (out == null)
+        {
+            return "";
+        }
+
+        String message = id.toString() + "," + pos.x + "," + pos.y + "," + amnt + "," + Dir.x + "," + Dir.y + "," + col.getRed() + "," + col.getGreen() + "," + col.getBlue();
+
+        out.println(message);
+
+        return "";
+    }
+
+    //Receive standardized messages
     public void ReceiveUpdate()
     {
+        //Error checking
         if (in == null)
         {
             return;
@@ -134,6 +142,8 @@ public class PServer
             return;
         }
 
+
+        //Receive message and respond
         String[] words = line.split(",");
         PongGame.ObjectNetId objectID = PongGame.ObjectNetId.valueOf(words[0]);
 
@@ -159,6 +169,10 @@ public class PServer
             case RESET:
                 PongGame.getInstance().reset();
                 break;
+
+            case PARTICLE:
+                PongGame.getInstance().AddEmitter(new Vec2(Float.parseFloat(words[1]), Float.parseFloat(words[2])),  Math.round(Float.parseFloat(words[3])),  new Vec2(Float.parseFloat(words[4]), Float.parseFloat(words[5])), new Color(Float.parseFloat(words[6]), Float.parseFloat(words[7]), Float.parseFloat(words[8]), 1.0));
+
         }
     }
 

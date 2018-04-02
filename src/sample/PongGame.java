@@ -224,6 +224,8 @@ public class PongGame
                     ball.resolveCollisionWithPaddle(leftPaddle);
                     leftPaddle.color = Color.RED;
                     AddEmitter(leftPaddle.position, 25, new Vec2(+1, 0), new Color(0.5, 0, 0, 1));
+                    PServer.GetInstance().SendMessage(ObjectNetId.PARTICLE, new Vec2(+1, 0));
+                    PServer.GetInstance().SendMessage(ObjectNetId.PARTICLE, leftPaddle.position, 25, new Vec2(+1, 0), new Color(0.5, 0, 0, 1));
                 }
 
 
@@ -231,6 +233,7 @@ public class PongGame
                     ball.resolveCollisionWithPaddle(rightPaddle);
                     rightPaddle.color = Color.BLUE;
                     AddEmitter(rightPaddle.position, 25,  new Vec2(-1, 0), new Color(0, 0, 0.5, 1));
+                    PServer.GetInstance().SendMessage(ObjectNetId.PARTICLE, rightPaddle.position, 25, new Vec2(-1, 0), new Color(0, 0, 0.5, 1));
                 }
 
                 PServer.GetInstance().SendMessage(ObjectNetId.BALL, ball.position);

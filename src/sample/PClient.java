@@ -1,5 +1,7 @@
 package sample;
 
+import javafx.scene.paint.Color;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -28,6 +30,7 @@ public class PClient {
     //Read
     BufferedReader in;
 
+    //Returns true if the client connects to the server
     public boolean Connect(String _targetIP)
     {
         this.targetIP = _targetIP;
@@ -50,6 +53,7 @@ public class PClient {
         return true;
     }
 
+    //Writes standardized message to the server
     public String SendMessage(PongGame.ObjectNetId id, Vec2 pos)
     {
         if (out == null)
@@ -66,6 +70,7 @@ public class PClient {
 
     public void ReceiveUpdate()
     {
+        //Error checking...
         if (in == null)
         {
             return;
@@ -95,6 +100,7 @@ public class PClient {
             return;
         }
 
+        //Receive the message and respond according to message type
         String[] words = line.split(",");
         PongGame.ObjectNetId objectID = PongGame.ObjectNetId.valueOf(words[0]);
 
@@ -120,6 +126,9 @@ public class PClient {
             case RESET:
                 PongGame.getInstance().reset();
                 break;
+
+            case PARTICLE:
+                PongGame.getInstance().AddEmitter(new Vec2(Float.parseFloat(words[1]), Float.parseFloat(words[2])),  Math.round(Float.parseFloat(words[3])),  new Vec2(Float.parseFloat(words[4]), Float.parseFloat(words[5])), new Color(Float.parseFloat(words[6]), Float.parseFloat(words[7]), Float.parseFloat(words[8]), 1.0));
 
         }
     }
