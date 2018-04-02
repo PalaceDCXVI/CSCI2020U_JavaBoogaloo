@@ -71,6 +71,7 @@ public class Scene_Game extends Scene_Base
                 {
                     PClient.GetInstance().CloseClient();
                 }
+                PData.getInstance().AddHighscore();
                 PData.getInstance().changeScene(PData.PSceneState.MENU);
             }
         });

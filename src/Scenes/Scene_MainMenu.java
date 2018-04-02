@@ -38,16 +38,15 @@ public class Scene_MainMenu extends Scene_Base {
     private Button button_exit = new Button("EXIT");
 
     // Right Menu
-    private Label label_username = new Label("Username:");
-    private TextField text_username = new TextField("Randy Mandy");
-    private Button button_randomusername = new Button("Randomize");
-    private Label label_ipaddress = new Label("IP ADDRESS:");
-    private TextField text_ipaddress = new TextField("127.0.0.1");
-    private Button button_localhost = new Button("LocalHost");
-    private Label label_status = new Label("Status: [...]");
-    private
+    private Label       label_username          = new Label("Username:");
+    private Label       label_ipaddress         = new Label("IP ADDRESS:");
+    private Label       label_status            = new Label("Status: [...]");
+    private TextField   text_username           = new TextField("Randy Mandy");
+    private TextField   text_ipaddress          = new TextField("127.0.0.1");
+    private Button      button_randomusername   = new Button("Randomize");
+    private Button      button_localhost        = new Button("LocalHost");
 
-    Socket socket;
+    private Socket socket;
 
     int clientPort = 20500;
 
@@ -207,7 +206,7 @@ public class Scene_MainMenu extends Scene_Base {
 
     public void OnAction_HighScores() {
         //Create high score scene.
-
+        PData.getInstance().changeScene(PData.PSceneState.SCORES);
         //Remove main menu from stage.
     }
 

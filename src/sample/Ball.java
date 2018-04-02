@@ -3,6 +3,8 @@ package sample;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
 
+import java.util.ArrayList;
+
 public class Ball
 {
     // Previous Position
@@ -17,6 +19,29 @@ public class Ball
     public Vec2 direction = new Vec2(-1.0f, 0.0f);
     // Start Direction
     public boolean startLeft = true;
+
+    // Trail Effect
+    private ArrayList<BallTrail> trails = new ArrayList<>();
+    public class BallTrail
+    {
+        public BallTrail(Vec2 _pos, Color _color)
+        {
+            position = _pos;
+            color = _color;
+            timeAlive = 1.0f;
+        }
+        public Vec2 position;
+        public float timeAlive;
+        public Color color;
+    }
+    public void AddTrail()
+    {
+        trails.add(new BallTrail(position, Color.RED));
+    }
+    public void clearTrail()
+    {
+        trails.clear();
+    }
 
     // Slope of ball (y = [m]x + b)
     public float slope = 0.0f;
@@ -42,6 +67,7 @@ public class Ball
     // Reset Wait
     public float ResetWait = 0.0f;
     public float ResetTime = 1000.0f;
+
 
     // Attach To Paddle
     public void attachToPaddle()
@@ -73,6 +99,7 @@ public class Ball
     {
         ResetWait = ResetTime;
         attachToPaddle();
+        clearTrail();
     }
 
     public void resolveCollisionWithPaddle(Paddle p)
@@ -165,10 +192,37 @@ public class Ball
                 PServer.GetInstance().SendMessage(PongGame.ObjectNetId.SCORE, new Vec2(PongGame.getInstance().player1score, PongGame.getInstance().player2score));
             }
         }
+
+        // trail Effect
+        if(System.currentTimeMillis() % 2 == 0)
+        {
+            AddTrail();
+        }
+
+        // Update Trails
+        for(int i = 0; i < trails.size(); i++)
+        {
+            trails.get(i).timeAlive *= 0.99f;
+            if(trails.get(i).timeAlive < 0.01f)
+            {
+                trails.remove(trails.get(i));
+                break;
+            }
+
+        }
     }
 
     public void draw(GraphicsContext gc)
     {
+        // Draw Trail
+        for(int i = 0; i < trails.size(); i++)
+        {
+            float t =  trails.get(i).timeAlive;
+            double ts = Math.pow(t, 0.2);
+            gc.setFill(Utility.colorMult(trails.get(i).color,t));
+            gc.fillRect(trails.get(i).position.x - ts*size.x/2, trails.get(i).position.y - ts*size.y/2, ts*size.x, ts*size.y);
+        }
+
         gc.setFill(Color.RED);
         gc.fillRect(position.x - size.x/2, position.y - size.y/2, size.x, size.y);
     }

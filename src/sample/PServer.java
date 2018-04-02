@@ -9,6 +9,7 @@ import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.net.SocketException;
 
 public class PServer
 {
@@ -172,6 +173,12 @@ public class PServer
 
     public void CloseServer()
     {
+        if(socket == null)
+            return;
+
+        if(serverSocket == null)
+            return;
+
         try
         {
             socket.close();

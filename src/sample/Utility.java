@@ -9,6 +9,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.util.concurrent.ThreadLocalRandom;
 
 public class Utility {
     // String Converters (From String)
@@ -85,6 +86,16 @@ public class Utility {
             System.out.println("ERROR: Cannot convert Long: " + value + ", to String");
             return "";
         }
+    }
+
+    // Char to Integer
+    public static int ToString(char c) { return Character.getNumericValue(c); }
+    public static char ToChar(String str)
+    {
+        if(str.length() == 0)
+            return '?';
+
+        return str.toCharArray()[0];
     }
 
     // Close Socket
@@ -209,4 +220,78 @@ public class Utility {
         double b = lerp(c0.getBlue(), c1.getBlue(), t);
         return new Color(r, g, b, 1);
     }
+
+    // Random Number
+    public static int Random(int min, int max)
+    {
+        return ThreadLocalRandom.current().nextInt(min, max + 1);
+    }
+    public static float Random01()
+    {
+        return ThreadLocalRandom.current().nextFloat();
+    }
+    public static float Random(float min, float max)
+    {
+        return ThreadLocalRandom.current().nextFloat() * (max - min) + min;
+    }
+
+    // Color Multiplication
+    public static Color colorMult(Color c1, Color c2)
+    {
+        return new Color(
+                Math.min(c1.getRed() * c2.getRed(), 1.0),
+                Math.min(c1.getBlue() * c2.getGreen(), 1.0),
+                Math.min(c1.getGreen() * c2.getBlue(), 1.0),
+                Math.min(c1.getBrightness() * c2.getBrightness(), 1.0)
+        );
+    }
+    public static Color colorMult(Color c1, float c2)
+    {
+        return new Color(
+                Math.min(c1.getRed() * c2, 1.0),
+                Math.min(c1.getBlue() * c2, 1.0),
+                Math.min(c1.getGreen() * c2, 1.0),
+                Math.min(c1.getBrightness() * c2, 1.0)
+        );
+    }
+    public static Color colorMult(Color c1, double c2)
+    {
+        return new Color(
+                Math.min(c1.getRed() * c2, 1.0),
+                Math.min(c1.getBlue() * c2, 1.0),
+                Math.min(c1.getGreen() * c2, 1.0),
+                Math.min(c1.getBrightness() * c2, 1.0)
+        );
+    }
+
+    // Color Addition
+    public static Color colorAdd(Color c1, Color c2)
+    {
+        return new Color(
+                Math.min(c1.getRed() + c2.getRed(), 1.0),
+                Math.min(c1.getBlue() + c2.getBlue(), 1.0),
+                Math.min(c1.getGreen() + c2.getGreen(), 1.0),
+                Math.min(c1.getBrightness() + c2.getBrightness(), 1.0)
+        );
+    }
+    public static Color colorAdd(Color c1, float c2)
+    {
+        return new Color(
+                Math.min(c1.getRed() + c2, 1.0),
+                Math.min(c1.getBlue() + c2, 1.0),
+                Math.min(c1.getGreen() + c2, 1.0),
+                Math.min(c1.getBrightness() + c2, 1.0)
+                );
+    }
+    public static Color colorAdd(Color c1, double c2)
+    {
+        return new Color(
+                Math.min(c1.getRed() + c2, 1.0),
+                Math.min(c1.getBlue() + c2, 1.0),
+                Math.min(c1.getGreen() + c2, 1.0),
+                Math.min(c1.getBrightness() + c2, 1.0)
+                );
+    }
+
+
 }
