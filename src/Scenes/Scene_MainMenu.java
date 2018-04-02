@@ -153,10 +153,11 @@ public class Scene_MainMenu extends Scene_Base {
     public void OnAction_Create() {
         // Change Type
         PData.SetAppData(PData.ApplicationType.SERVER, text_ipaddress.getText(), clientPort);
+        PongGame.getInstance().setPlayerSide(PongGame.PSide.LEFT);
 
         // DEBUG //
-        PData.getInstance().changeScene(PData.PSceneState.GAME);
-        if (1 == 1) return;
+        //PData.getInstance().changeScene(PData.PSceneState.GAME);
+        //if (1 == 1) return;
         // DEBUG //
 
         //Spawn server socket
@@ -179,10 +180,11 @@ public class Scene_MainMenu extends Scene_Base {
     public void OnAction_Join() {
         // Change Type
         PData.SetAppData(PData.ApplicationType.CLIENT, text_ipaddress.getText(), clientPort);
+        PongGame.getInstance().setPlayerSide(PongGame.PSide.RIGHT);
 
         // DEBUG //
-        PData.getInstance().changeScene(PData.PSceneState.GAME);
-        if (1 == 1) return;
+        //PData.getInstance().changeScene(PData.PSceneState.GAME);
+        //if (1 == 1) return;
         // DEBUG //
 
         //Fetch input for IP address to play against
@@ -199,6 +201,8 @@ public class Scene_MainMenu extends Scene_Base {
             label_status.setText("Failed to connect to IP Address.");
             return;
         }
+        PData.getInstance().changeScene(PData.PSceneState.GAME);
+
     }
 
     public void OnAction_HighScores() {

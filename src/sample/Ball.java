@@ -145,12 +145,25 @@ public class Ball
             reset();
             PongGame.getInstance().player2score++;
             startLeft = true;
+
+            if (PData.getInstance().AppType == PData.ApplicationType.SERVER)
+            {
+                System.out.println("Score sent");
+                PServer.GetInstance().SendMessage(PongGame.ObjectNetId.SCORE, new Vec2(PongGame.getInstance().player1score, PongGame.getInstance().player2score));
+            }
+
         }
         else if(position.x + size.x/2 > PData.getInstance().AppWidth)
         {
             reset();
             PongGame.getInstance().player1score++;
             startLeft = false;
+
+            if (PData.getInstance().AppType == PData.ApplicationType.SERVER)
+            {
+                System.out.println("Score sent");
+                PServer.GetInstance().SendMessage(PongGame.ObjectNetId.SCORE, new Vec2(PongGame.getInstance().player1score, PongGame.getInstance().player2score));
+            }
         }
     }
 

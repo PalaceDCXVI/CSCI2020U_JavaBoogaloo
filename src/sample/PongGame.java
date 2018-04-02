@@ -1,5 +1,7 @@
 package sample;
 
+import javafx.application.Application;
+import javafx.concurrent.Task;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
@@ -8,6 +10,15 @@ import javafx.scene.text.TextAlignment;
 
 public class PongGame
 {
+    public enum ObjectNetId
+    {
+        BALL,
+        LPADDLE,
+        RPADDLE,
+        SCORE,
+        RESET
+    }
+
     // Instancing
     static private PongGame instance = null;
     static public PongGame getInstance()
@@ -41,7 +52,7 @@ public class PongGame
 
     public Paddle leftPaddle = new Paddle();
     public Paddle rightPaddle = new Paddle();
-    private Ball ball = new Ball();
+    public Ball ball = new Ball();
 
     // Score
     public int player1score = 0;
@@ -118,7 +129,25 @@ public class PongGame
         if(isGameOver)
         {
             if(actionButton)
+            {
+                if (PData.getInstance().AppType == PData.ApplicationType.SERVER)
+                {
+                    PServer.GetInstance().SendMessage(ObjectNetId.RESET, new Vec2());
+                }
+                else if (PData.getInstance().AppType == PData.ApplicationType.CLIENT)
+                {
+                    PClient.GetInstance().SendMessage(ObjectNetId.RESET, new Vec2());
+                }
                 reset();
+            }
+            if (PData.getInstance().AppType == PData.ApplicationType.SERVER)
+            {
+                PServer.GetInstance().ReceiveUpdate();
+            }
+            else if (PData.getInstance().AppType == PData.ApplicationType.CLIENT)
+            {
+                PClient.GetInstance().ReceiveUpdate();
+            }
             return;
         }
 
@@ -129,7 +158,24 @@ public class PongGame
         }
 
         leftPaddle.update(delta);
+        if (PData.getInstance().AppType == PData.ApplicationType.SERVER)
+        {
+            PServer.GetInstance().SendMessage(ObjectNetId.LPADDLE, leftPaddle.position);
+        }
+        else
+        {
+            PClient.GetInstance().ReceiveUpdate();
+        }
+        
         rightPaddle.update(delta);
+        if (PData.getInstance().AppType == PData.ApplicationType.CLIENT)
+        {
+            PClient.GetInstance().SendMessage(ObjectNetId.RPADDLE, rightPaddle.position);
+        }
+        else
+        {
+            PServer.GetInstance().ReceiveUpdate();
+        }
 
         // Check if ball is waiting
         if(ball.ResetWait > 0.0f)
@@ -141,20 +187,28 @@ public class PongGame
                 ball.ResetWait = 0.0f;
         }
         else{
-            ball.update(delta);
-
-            // Check collision
-            if (leftPaddle.checkCollision(ball))
+            //Ball only updated on the server.
+            if (PData.getInstance().AppType == PData.ApplicationType.SERVER)
             {
-                ball.resolveCollisionWithPaddle(leftPaddle);
-                leftPaddle.color = Color.RED;
+                ball.update(delta);
+
+                // Check collision
+                if (leftPaddle.checkCollision(ball)) {
+                    ball.resolveCollisionWithPaddle(leftPaddle);
+                    leftPaddle.color = Color.RED;
+                }
+
+
+                if (rightPaddle.checkCollision(ball)) {
+                    ball.resolveCollisionWithPaddle(rightPaddle);
+                    rightPaddle.color = Color.RED;
+                }
+
+                PServer.GetInstance().SendMessage(ObjectNetId.BALL, ball.position);
             }
-
-
-            if (rightPaddle.checkCollision(ball))
+            else
             {
-                ball.resolveCollisionWithPaddle(rightPaddle);
-                rightPaddle.color = Color.RED;
+                PClient.GetInstance().ReceiveUpdate();
             }
 
 
@@ -164,6 +218,20 @@ public class PongGame
         if(player1score >= winningScore || player2score >= winningScore)
         {
             isGameOver = true;
+        }
+
+
+        //Bonus Network Update
+        {
+            if (PData.getInstance().AppType == PData.ApplicationType.SERVER)
+            {
+                PServer.GetInstance().ReceiveUpdate();
+            }
+            else if (PData.getInstance().AppType == PData.ApplicationType.CLIENT)
+            {
+                PClient.GetInstance().ReceiveUpdate();
+
+            }
         }
     }
 
