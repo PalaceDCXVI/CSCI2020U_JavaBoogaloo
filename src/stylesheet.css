@@ -1,0 +1,12 @@
+#menu{
+    -fx-background-color: #28292b;
+}
+
+#button{
+    -fx-background-color: #28292b;
+    -fx-text-fill: grey;
+}
+
+#score-table{
+    -fx-background-color: #28292b, #505256;
+}

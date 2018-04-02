@@ -44,16 +44,20 @@ public class Scene_Highscore extends Scene_Base
         timeColumn.setCellValueFactory(new PropertyValueFactory<>("GameTime"));
 
         table.getColumns().addAll(userColumn, timeColumn);
+        table.setId("score-table");
 
         Button backButton = new Button("Back");
         backButton.setOnAction(e -> OnAction_Back());
+        backButton.setId("button");
 
         root.setCenter(table);
         root.setBottom(backButton);
         BorderPane.setMargin(backButton, new Insets(5));
         BorderPane.setAlignment(backButton, Pos.CENTER);
         root.setPadding(new Insets(5, 5, 5, 5));
+        root.setId("menu");
         m_scene = new Scene(root, PData.getInstance().AppWidth, PData.getInstance().AppHeight, Color.BLACK);
+        m_scene.getStylesheets().add("stylesheet.css");
     }
 
     public void RefreshScores()

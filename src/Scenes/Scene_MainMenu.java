@@ -128,6 +128,9 @@ public class Scene_MainMenu extends Scene_Base {
     public void RandomizeUsername() {
         text_username.setText(RandomNames.GetName());
     }
+    public String getUsername() {
+        return text_username.getText();
+    }
 
     public void UpdateButtonLockRules() {
         boolean EmptyUsername = text_username.getText().length() == 0;

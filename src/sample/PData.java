@@ -141,7 +141,7 @@ public class PData
     }
     public void AddHighscore()
     {
-        highscores.add(new HighScore("Username", endTime - startTime));
+        highscores.add(new HighScore(mainmenu.getUsername(), endTime - startTime));
     }
 
     public void changeScene(PSceneState p)
