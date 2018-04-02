@@ -218,19 +218,20 @@ public class PongGame
         gc.setFont(Utility.getFont(Utility.FontType.COURIER, FontPosture.REGULAR, 16));
         gc.setTextAlign(TextAlignment.LEFT);
 
+        // Server Info Top Left
         String ServerInfo1 = "Server: ";
         if(data.AppType == PData.ApplicationType.CLIENT)
             ServerInfo1 = "Client: ";
 
         ServerInfo1 += data.IpAddress + "\nPort: " + Utility.ToString(data.Port);
 
-        gc.fillText(ServerInfo1, 2, 14);
+        gc.fillText(ServerInfo1, 3, 14);
 
-
+        // Server Info Top Right
         gc.setTextAlign(TextAlignment.RIGHT);
         String ServerInfo2 = "Client Connection: " + ((data.ClientConnected) ? "TRUE" : "FALSE");
         ServerInfo2 += "\nClient Ping: 0ms";
-        gc.fillText(ServerInfo2, data.AppWidth, 14);
+        gc.fillText(ServerInfo2, data.AppWidth - 3, 14);
 
         // Draw Score
         gc.setFill(Color.WHITE);

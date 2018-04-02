@@ -206,7 +206,7 @@ public class Ball
         {
             float t =  trails.get(i).timeAlive;
             double ts = Math.pow(t, 0.2);
-            gc.setFill(Utility.colorMult(trails.get(i).color,t));
+            gc.setFill(Utility.colorMult(trails.get(i).color,Math.min(t, 0.7f)));
             gc.fillRect(trails.get(i).position.x - ts*size.x/2, trails.get(i).position.y - ts*size.y/2, ts*size.x, ts*size.y);
         }
 
