@@ -19,7 +19,8 @@ public class PongGame
         LPADDLE,
         RPADDLE,
         SCORE,
-        RESET
+        RESET,
+        PARTICLE
     }
 
     // Instancing

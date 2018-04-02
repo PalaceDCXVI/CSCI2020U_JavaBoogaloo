@@ -50,30 +50,21 @@ public class PServer
             @Override
             protected Integer call()
             {
-                System.out.println("connection accepted0");
-
                 try {
                     socket = serverSocket.accept();
-                    System.out.println("connection accepted1");
 
                     //write messages
                     out = new PrintWriter(socket.getOutputStream(), true);
-                    System.out.println("connection accepted2");
 
                     //read messages
                     in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-                    System.out.println("connection accepted3");
 
                 } catch (IOException e) {
                     e.printStackTrace();
-                    System.out.println("connection failed");
 
                 }
-                System.out.println("connection accepted4");
 
                 Platform.runLater(() -> PData.getInstance().changeScene(PData.PSceneState.GAME));
-
-                System.out.println("connection accepted5");
 
                 return 0;
             }

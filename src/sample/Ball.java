@@ -175,7 +175,6 @@ public class Ball
 
             if (PData.getInstance().AppType == PData.ApplicationType.SERVER)
             {
-                System.out.println("Score sent");
                 PServer.GetInstance().SendMessage(PongGame.ObjectNetId.SCORE, new Vec2(PongGame.getInstance().player1score, PongGame.getInstance().player2score));
             }
 
@@ -188,7 +187,6 @@ public class Ball
 
             if (PData.getInstance().AppType == PData.ApplicationType.SERVER)
             {
-                System.out.println("Score sent");
                 PServer.GetInstance().SendMessage(PongGame.ObjectNetId.SCORE, new Vec2(PongGame.getInstance().player1score, PongGame.getInstance().player2score));
             }
 
