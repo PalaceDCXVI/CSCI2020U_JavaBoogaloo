@@ -167,21 +167,21 @@ public class PongGame
     // Update
     public void update(double delta)
     {
+        if(player1name == "" || player2name == "")
+        {
+            if (PData.getInstance().AppType == PData.ApplicationType.SERVER)
+            {
+                PServer.GetInstance().SendMessage(ObjectNetId.NAME, username);
+
+            }
+            else if (PData.getInstance().AppType == PData.ApplicationType.CLIENT)
+            {
+                PClient.GetInstance().SendMessage(ObjectNetId.NAME, username);
+            }
+        }
+
         if(isGameOver)
         {
-            if(player1name == "" || player2name == "")
-            {
-                if (PData.getInstance().AppType == PData.ApplicationType.SERVER)
-                {
-                    PServer.GetInstance().SendMessage(ObjectNetId.NAME, username);
-
-                }
-                else if (PData.getInstance().AppType == PData.ApplicationType.CLIENT)
-                {
-                    PClient.GetInstance().SendMessage(ObjectNetId.NAME, username);
-                }
-            }
-
             if(actionButton)
             {
                 if (PData.getInstance().AppType == PData.ApplicationType.SERVER)
