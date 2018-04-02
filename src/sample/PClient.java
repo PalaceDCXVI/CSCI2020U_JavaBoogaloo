@@ -67,6 +67,19 @@ public class PClient {
 
         return "";
     }
+    //Send username as message
+    public String SendMessage(PongGame.ObjectNetId id, String name)
+    {
+        if(out == null)
+        {
+            return "";
+        }
+
+        String message = id.toString() + ", " + name;
+        out.println(message);
+
+        return "";
+    }
 
     public void ReceiveUpdate()
     {
@@ -129,7 +142,11 @@ public class PClient {
 
             case PARTICLE:
                 PongGame.getInstance().AddEmitter(new Vec2(Float.parseFloat(words[1]), Float.parseFloat(words[2])),  Math.round(Float.parseFloat(words[3])),  new Vec2(Float.parseFloat(words[4]), Float.parseFloat(words[5])), new Color(Float.parseFloat(words[6]), Float.parseFloat(words[7]), Float.parseFloat(words[8]), 1.0));
+                break;
 
+            case NAME:
+                PongGame.getInstance().setNames(words[1]);
+                break;
         }
     }
 

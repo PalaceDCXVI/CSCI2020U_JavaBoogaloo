@@ -79,6 +79,13 @@ public class PServer
         return true;
     }
 
+    public boolean isStarted()
+    {
+        if(serverSocket != null)
+            return !serverSocket.isClosed();
+        return false;
+    }
+
     //Send standardized message
     public String SendMessage(PongGame.ObjectNetId id, Vec2 pos)
     {
@@ -104,6 +111,20 @@ public class PServer
 
         String message = id.toString() + "," + pos.x + "," + pos.y + "," + amnt + "," + Dir.x + "," + Dir.y + "," + col.getRed() + "," + col.getGreen() + "," + col.getBlue();
 
+        out.println(message);
+
+        return "";
+    }
+
+    //Send username as message
+    public String SendMessage(PongGame.ObjectNetId id, String name)
+    {
+        if(out == null)
+        {
+            return "";
+        }
+
+        String message = id.toString() + ", " + name;
         out.println(message);
 
         return "";
@@ -172,7 +193,11 @@ public class PServer
 
             case PARTICLE:
                 PongGame.getInstance().AddEmitter(new Vec2(Float.parseFloat(words[1]), Float.parseFloat(words[2])),  Math.round(Float.parseFloat(words[3])),  new Vec2(Float.parseFloat(words[4]), Float.parseFloat(words[5])), new Color(Float.parseFloat(words[6]), Float.parseFloat(words[7]), Float.parseFloat(words[8]), 1.0));
+                break;
 
+            case NAME:
+                PongGame.getInstance().setNames(words[1]);
+                break;
         }
     }
 

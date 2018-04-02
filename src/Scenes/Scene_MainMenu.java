@@ -34,8 +34,8 @@ public class Scene_MainMenu extends Scene_Base {
     // Left Menu
     private Button button_host = new Button("Host Game");
     private Button button_join = new Button("Join");
-    private Button button_highscore = new Button("HIGH_SCORE");
-    private Button button_exit = new Button("EXIT");
+    private Button button_highscore = new Button("High Score");
+    private Button button_exit = new Button("Exit");
 
     // Right Menu
     private Label       label_username          = new Label("Username:");
@@ -130,9 +130,6 @@ public class Scene_MainMenu extends Scene_Base {
     public void RandomizeUsername() {
         text_username.setText(RandomNames.GetName());
     }
-    public String getUsername() {
-        return text_username.getText();
-    }
 
     public void UpdateButtonLockRules() {
         boolean EmptyUsername = text_username.getText().length() == 0;
@@ -155,10 +152,15 @@ public class Scene_MainMenu extends Scene_Base {
     }
 
     public void OnAction_Create() {
+
+        //Can't spawn multiple hosting/joining threads
+        if(PServer.GetInstance().isStarted())
+            return;
+
         // Change Type
         PData.SetAppData(PData.ApplicationType.SERVER, text_ipaddress.getText(), clientPort);
         PongGame.getInstance().setPlayerSide(PongGame.PSide.LEFT);
-
+        PongGame.getInstance().setUsername(text_username.getText());
         // DEBUG //
         //PData.getInstance().changeScene(PData.PSceneState.GAME);
         //if (1 == 1) return;
@@ -182,9 +184,15 @@ public class Scene_MainMenu extends Scene_Base {
     }
 
     public void OnAction_Join() {
+
+        //Can't spawn multiple hosting/joining threads
+        if(PServer.GetInstance().isStarted())
+            return;
+
         // Change Type
         PData.SetAppData(PData.ApplicationType.CLIENT, text_ipaddress.getText(), clientPort);
         PongGame.getInstance().setPlayerSide(PongGame.PSide.RIGHT);
+        PongGame.getInstance().setUsername(text_username.getText());
 
         // DEBUG //
         //PData.getInstance().changeScene(PData.PSceneState.GAME);
@@ -216,6 +224,7 @@ public class Scene_MainMenu extends Scene_Base {
     }
 
     public void OnAction_Exit() {
+        PData.getInstance().SaveHighscores();
         System.exit(0);
     }
 

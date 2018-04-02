@@ -58,6 +58,7 @@ public class PData
     public final int    AppHeight = 640;
     public long startTime, endTime;
 
+
     // Main Menu
     public Scene_MainMenu   mainmenu = null;
     // Game
@@ -104,7 +105,7 @@ public class PData
                 while((line = inFile.readLine()) != null)
                 {
                     String[] splitLine = line.split(",");
-                    tScores.add(new HighScore(splitLine[0], Float.parseFloat(splitLine[1])));
+                    tScores.add(new HighScore(splitLine[0], Integer.parseInt(splitLine[1]), splitLine[2], Integer.parseInt(splitLine[3]), Float.parseFloat(splitLine[4])));
                 }
             }
             else
@@ -120,13 +121,13 @@ public class PData
 
         return tScores;
     }
-    private void SaveHighscores()
+    public void SaveHighscores()
     {
         try
         {
             File file = new File("highscores.csv");
             PrintWriter outFile = new PrintWriter(file);
-            outFile.println("Username,GameTime");
+            outFile.println("Player1,P1Score,Player2,P2Score,GameTime");
             for(HighScore score : highscores)
             {
                 outFile.println(score.toString());
@@ -139,9 +140,11 @@ public class PData
             e.printStackTrace();
         }
     }
-    public void AddHighscore()
+    public void AddHighscore(String p1name, String p2name, int p1score, int p2score)
     {
-        highscores.add(new HighScore(mainmenu.getUsername(), endTime - startTime));
+        highscores.add(new HighScore(p1name, p1score,
+                        p2name, p2score,
+                        endTime - startTime));
     }
 
     public void changeScene(PSceneState p)

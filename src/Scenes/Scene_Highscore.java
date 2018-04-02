@@ -33,17 +33,29 @@ public class Scene_Highscore extends Scene_Base
         table = new TableView<>();
         table.setItems(PData.getInstance().getHighscores());
         table.setEditable(false);
-        table.setMaxWidth(305);
+        table.setMaxWidth(555);
 
-        TableColumn<HighScore, String> userColumn = new TableColumn<>("Username");
-        userColumn.setMinWidth(200);
-        userColumn.setCellValueFactory(new PropertyValueFactory<>("Username"));
+        TableColumn<HighScore, String> p1Column = new TableColumn<>("Player 1");
+        p1Column.setMinWidth(150);
+        p1Column.setCellValueFactory(new PropertyValueFactory<>("Player1"));
+
+        TableColumn<HighScore, String> p1ScoreCol = new TableColumn<>("P1 Score");
+        p1ScoreCol.setMinWidth(50);
+        p1ScoreCol.setCellValueFactory(new PropertyValueFactory<>("P1score"));
+
+        TableColumn<HighScore, String> p2ScoreCol = new TableColumn<>("P2 Score");
+        p2ScoreCol.setMinWidth(50);
+        p2ScoreCol.setCellValueFactory(new PropertyValueFactory<>("P2score"));
+
+        TableColumn<HighScore, String> p2Column = new TableColumn<>("Player 2");
+        p2Column.setMinWidth(150);
+        p2Column.setCellValueFactory(new PropertyValueFactory<>("Player2"));
 
         TableColumn<HighScore, Float> timeColumn = new TableColumn<>("Game Time");
         timeColumn.setMinWidth(100);
         timeColumn.setCellValueFactory(new PropertyValueFactory<>("GameTime"));
 
-        table.getColumns().addAll(userColumn, timeColumn);
+        table.getColumns().addAll(p1Column, p1ScoreCol, p2ScoreCol, p2Column, timeColumn);
         table.setId("score-table");
 
         Button backButton = new Button("Back");

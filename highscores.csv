@@ -1,4 +1,4 @@
-Username,GameTime
-Dreadbox,0.10
-Palace,1.23
-Incetents,1.30
+Player1,P1Score,Player2,P2Score,GameTime
+Dreadbox,10,TopHatMuffin,0,0.1
+Palace,3,Livelett,1,1.23
+Incetents,3,ZaneCarro,0,2.5

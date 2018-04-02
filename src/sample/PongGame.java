@@ -20,7 +20,8 @@ public class PongGame
         RPADDLE,
         SCORE,
         RESET,
-        PARTICLE
+        PARTICLE,
+        NAME
     }
 
     // Instancing
@@ -39,6 +40,8 @@ public class PongGame
     }
     public Paddle playerPaddle = null;
     public Paddle enemyPaddle = null;
+
+    private PSide side;
     public void setPlayerSide(PSide s)
     {
         if(s == PSide.LEFT)
@@ -51,16 +54,39 @@ public class PongGame
             playerPaddle = rightPaddle;
             enemyPaddle = leftPaddle;
         }
-
+        side = s;
     }
 
     public Paddle leftPaddle = new Paddle();
     public Paddle rightPaddle = new Paddle();
     public Ball ball = new Ball();
 
+
+    private String username;
+    public void setUsername(String name)
+    {
+        username = name;
+    }
+
     // Score
     public int player1score = 0;
     public int player2score = 0;
+    public String player1name = "";
+    public String player2name = "";
+
+    public void setNames(String opponent)
+    {
+        if(side == PSide.LEFT)
+        {
+            player1name = username;
+            player2name = opponent;
+        }
+        else
+        {
+            player1name = opponent;
+            player2name = username;
+        }
+    }
 
     // Bouncer Emitters
     private ArrayList<PEmitter> emitters = new ArrayList<PEmitter>();
@@ -143,6 +169,19 @@ public class PongGame
     {
         if(isGameOver)
         {
+            if(player1name == "" || player2name == "")
+            {
+                if (PData.getInstance().AppType == PData.ApplicationType.SERVER)
+                {
+                    PServer.GetInstance().SendMessage(ObjectNetId.NAME, username);
+
+                }
+                else if (PData.getInstance().AppType == PData.ApplicationType.CLIENT)
+                {
+                    PClient.GetInstance().SendMessage(ObjectNetId.NAME, username);
+                }
+            }
+
             if(actionButton)
             {
                 if (PData.getInstance().AppType == PData.ApplicationType.SERVER)
@@ -331,9 +370,9 @@ public class PongGame
         {
             gc.setFont(Utility.getFont(Utility.FontType.COURIER, FontPosture.REGULAR, 100));
 
-            String WinMessage = "PLAYER 2 WINS";
+            String WinMessage = player2name + "\nWINS";
             if(player1score > player2score)
-                WinMessage ="PLAYER 1 WINS";
+                WinMessage = player1name + "\nWINS";
 
             gc.fillText(WinMessage, data.AppWidth * 0.5f ,data.AppHeight * 0.5f);
         }
