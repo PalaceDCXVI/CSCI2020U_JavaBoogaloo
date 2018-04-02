@@ -191,8 +191,12 @@ public class Ball
                 System.out.println("Score sent");
                 PServer.GetInstance().SendMessage(PongGame.ObjectNetId.SCORE, new Vec2(PongGame.getInstance().player1score, PongGame.getInstance().player2score));
             }
-        }
 
+        }
+    }
+
+    public void draw(GraphicsContext gc)
+    {
         // trail Effect
         if(System.currentTimeMillis() % 2 == 0)
         {
@@ -200,21 +204,16 @@ public class Ball
         }
 
         // Update Trails
-        for(int i = 0; i < trails.size(); i++)
-        {
+        for(int i = 0; i < trails.size(); i++) {
             trails.get(i).timeAlive *= 0.99f;
-            if(trails.get(i).timeAlive < 0.01f)
-            {
+            if (trails.get(i).timeAlive < 0.01f) {
                 trails.remove(trails.get(i));
                 break;
             }
-
         }
-    }
 
-    public void draw(GraphicsContext gc)
-    {
-        // Draw Trail
+
+            // Draw Trail
         for(int i = 0; i < trails.size(); i++)
         {
             float t =  trails.get(i).timeAlive;

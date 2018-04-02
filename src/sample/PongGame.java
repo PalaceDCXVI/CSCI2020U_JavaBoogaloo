@@ -222,12 +222,14 @@ public class PongGame
                 if (leftPaddle.checkCollision(ball)) {
                     ball.resolveCollisionWithPaddle(leftPaddle);
                     leftPaddle.color = Color.RED;
+                    AddEmitter(leftPaddle.position, 25, new Vec2(+1, 0), new Color(0.5, 0, 0, 1));
                 }
 
 
                 if (rightPaddle.checkCollision(ball)) {
                     ball.resolveCollisionWithPaddle(rightPaddle);
-                    rightPaddle.color = Color.RED;
+                    rightPaddle.color = Color.BLUE;
+                    AddEmitter(rightPaddle.position, 25,  new Vec2(-1, 0), new Color(0, 0, 0.5, 1));
                 }
 
                 PServer.GetInstance().SendMessage(ObjectNetId.BALL, ball.position);
