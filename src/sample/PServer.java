@@ -130,6 +130,20 @@ public class PServer
         return "";
     }
 
+    //Send username as message
+    public String SendMessage(PongGame.ObjectNetId id)
+    {
+        if(out == null || id != PongGame.ObjectNetId.ENDGAME)
+        {
+            return "";
+        }
+
+        String message = id.toString();
+        out.println(message);
+
+        return "";
+    }
+
     //Receive standardized messages
     public void ReceiveUpdate()
     {
@@ -198,6 +212,10 @@ public class PServer
             case NAME:
                 PongGame.getInstance().setNames(words[1]);
                 break;
+
+            case ENDGAME:
+                PData.getInstance().game.EndGame();
+                break;
         }
     }
 
@@ -211,6 +229,7 @@ public class PServer
 
         try
         {
+
             socket.close();
             serverSocket.close();
         }

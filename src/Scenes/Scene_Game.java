@@ -63,17 +63,7 @@ public class Scene_Game extends Scene_Base
             // Escape
             if(key.getCode() == KeyCode.ESCAPE)
             {
-                if (PData.getInstance().AppType == PData.ApplicationType.SERVER)
-                {
-                    PServer.GetInstance().CloseServer();
-                }
-                else if (PData.getInstance().AppType == PData.ApplicationType.CLIENT)
-                {
-                    PClient.GetInstance().CloseClient();
-                }
-                PData.getInstance().AddHighscore(PongGame.getInstance().player1name, PongGame.getInstance().player2name,
-                                                PongGame.getInstance().player1score, PongGame.getInstance().player2score);
-                PData.getInstance().changeScene(PData.PSceneState.MENU);
+                EndGame();
             }
         });
         // Player Input (KEY RELEASE)
@@ -91,5 +81,21 @@ public class Scene_Game extends Scene_Base
             if(key.getCode() == KeyCode.SPACE)
                 PongGame.getInstance().updateInputSpacebar(false);
         });
+    }
+    public void EndGame()
+    {
+        if (PData.getInstance().AppType == PData.ApplicationType.SERVER)
+        {
+            PServer.GetInstance().SendMessage(PongGame.ObjectNetId.ENDGAME);
+            PServer.GetInstance().CloseServer();
+        }
+        else if (PData.getInstance().AppType == PData.ApplicationType.CLIENT)
+        {
+            PClient.GetInstance().SendMessage(PongGame.ObjectNetId.ENDGAME);
+            PClient.GetInstance().CloseClient();
+        }
+        PData.getInstance().AddHighscore(PongGame.getInstance().player1name, PongGame.getInstance().player2name,
+                PongGame.getInstance().player1score, PongGame.getInstance().player2score);
+        PData.getInstance().changeScene(PData.PSceneState.MENU);
     }
 }

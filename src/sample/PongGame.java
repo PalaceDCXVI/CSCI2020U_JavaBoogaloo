@@ -21,7 +21,8 @@ public class PongGame
         SCORE,
         RESET,
         PARTICLE,
-        NAME
+        NAME,
+        ENDGAME
     }
 
     // Instancing
